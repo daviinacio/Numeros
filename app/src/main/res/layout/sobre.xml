@@ -1,0 +1,108 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+	android:gravity="center">
+	
+	<!--TextView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:text="Sobre"/-->
+		
+	<!--LinearLayout
+		android:layout_width="fill_parent"
+		android:layout_height="match_parent"
+		android:gravity="center"
+		android:orientation="vertical">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="by: Davi Inácio"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/app_version"
+			android:id="@+id/main_version"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="©DaviApps inc."/>
+
+	</LinearLayout-->
+	
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center"
+		android:orientation="vertical"
+		android:padding="10dp">
+		
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="@drawable/numeros_320"
+			android:layout_marginBottom="20dp"/>
+		
+		<ListView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="@color/Azul"/>
+		
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="by: Davi Inácio"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/app_version"
+			android:id="@+id/main_version"/>
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/copyright"/>
+		
+	</LinearLayout>
+	
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="45dp"
+		android:padding="1.5dp"
+		android:orientation="horizontal">
+		
+		<Button
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="0.5"
+			android:layout_margin="1.5dp"
+			android:background="#333333"
+			android:text="Relatar erro"
+			android:id="@+id/sobre_relatarErro"/>
+
+		<Button
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:visibility="gone"
+			android:layout_weight="0.5"
+			android:background="#333333"
+			android:text="Pontos"
+			android:id="@+id/sobre_pontos"/>
+		
+		<Button
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_weight="0.5"
+			android:layout_margin="1.5dp"
+			android:background="#333333"
+			android:text="Contato"
+			android:id="@+id/sobre_contato"/>
+
+	</LinearLayout>
+    
+</LinearLayout>

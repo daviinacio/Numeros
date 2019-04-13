@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="40dp"
+	android:gravity="center_vertical"
+    android:orientation="horizontal">
+    
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="40dp"
+		android:layout_weight="0.8"
+		android:gravity="center"
+		android:id="@+id/pontos_list_user"
+		android:text="User"/>
+	
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="0.8"
+		android:gravity="center"
+		android:id="@+id/pontos_list_pontos"
+		android:text="10"/>
+	
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="0.8"
+		android:gravity="center"
+		android:id="@+id/pontos_list_acertos"
+		android:text="50%"/>
+	
+	<!--TextView
+		android:layout_width="wrap_content"
+		android:layout_height="1dp"
+		android:layout_weight="0.1"/-->
+	
+	<Button
+		android:layout_width="80dp"
+		android:layout_height="40dp"
+		android:layout_weight="0.1"
+		android:background="#00ffffff"
+		android:textColor="#ff7766"
+		android:text="x"
+		android:id="@+id/pontos_list_remove"/>
+	
+</LinearLayout>

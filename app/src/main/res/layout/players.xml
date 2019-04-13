@@ -1,0 +1,92 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+	android:paddingTop="2dp"
+	android:paddingBottom="5dp"
+	android:paddingLeft="5dp"
+	android:paddingRight="5dp"
+	android:gravity="center">
+
+	<!--TextView
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:text="Pontos"/-->
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/pontos_lista_columns_lay"
+		android:gravity="center">
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.8"
+			android:gravity="center"
+			android:textColor="#ffffff"
+			android:text="Nome"/>
+
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.8"
+			android:gravity="center"
+			android:textColor="#ffffff"
+			android:text="Max. pontos"/>
+
+		<TextView
+			android:layout_width="80dp"
+			android:layout_height="wrap_content"
+			android:layout_weight="0.1"
+			android:gravity="center"
+			android:textColor="#ffffff"
+			android:text=""/>
+
+	</LinearLayout>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="200dp"
+		android:id="@+id/pontos_lista_lay">
+
+		<ListView
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:adjustViewBounds="true"
+			android:maxHeight="10dp"
+			android:layout_margin="1.5dp"
+			android:id="@+id/players_lista"/>
+
+		<TextView
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:gravity="center"
+			android:textColor="#ffffff"
+			android:textSize="20dp"
+			android:text="Nenhum player registrado"
+			android:id="@+id/players_lista_nenhumPonto"/>
+
+	</RelativeLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="40dp"
+		android:layout_marginRight="10dp"
+		android:layout_marginLeft="3dp"
+		android:id="@+id/pontos_buttons"
+		android:gravity="right"
+		android:orientation="horizontal">
+
+		<Button
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="#00ffffff"
+			android:textColor="@color/colorAccent"
+			android:layout_margin="1.5dp"
+			android:text="Novo player"
+			android:id="@+id/players_btn_new"/>
+
+	</LinearLayout>
+
+</LinearLayout>

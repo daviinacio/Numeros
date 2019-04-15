@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Numeros</string>
-	<string name="app_version">0.1.5.4</string>
+	<string name="app_version">1.5.4</string>
 	<string name="copyright">DaviApps © 2016 - 2019.</string>
 	
 	<string name="update_index">http://daviapps.6te.net/json/download_list.json</string>

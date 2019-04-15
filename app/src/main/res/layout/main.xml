@@ -1,205 +1,218 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_height="match_parent"
+	android:layout_width="match_parent"
 	android:id="@+id/main_lay"
-	android:padding="20dp"
-	android:orientation="vertical">
-
-    <TextView
-        android:text="@string/app_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-		android:textSize="@dimen/Nome"/>
-	
-	<LinearLayout
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal">
-		
-		<TextView
-			android:text="Pontos: 0"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginRight="10dp"
-			android:id="@+id/pontos"
-			android:textSize="@dimen/Pontos"/>
-		
-		<TextView
-			android:text="Nível: 0"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:id="@+id/level"
-			android:textSize="@dimen/Pontos"/>
-		
-	</LinearLayout>
+	tools:context=".MainActivity">
 	
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:gravity="center"
+		android:gravity="center_horizontal"
+		android:id="@+id/main_sublay"
+		android:padding="20dp"
 		android:orientation="vertical">
 		
 		<LinearLayout
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_weight="0.9"
-			android:gravity="center">
-			
+			android:orientation="horizontal">
+
+			<TextView
+				android:text="Pontos: 0"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginRight="10dp"
+				android:id="@+id/pontos"
+				android:textSize="@dimen/Pontos"/>
+
+			<TextView
+				android:text="Nível: 0"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/level"
+				android:textSize="@dimen/Pontos"/>
+
+		</LinearLayout>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:gravity="center"
+			android:orientation="vertical">
+
 			<LinearLayout
-				android:layout_width="@dimen/Botoens"
-				android:layout_height="@dimen/Botoens"
-				android:background="#33ffffff"
-				android:gravity="center"
-				android:orientation="vertical">
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="0.9"
+				android:gravity="center">
 
 				<LinearLayout
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_weight="0.5">
+					android:layout_width="@dimen/Botoens"
+					android:layout_height="@dimen/Botoens"
+					android:background="#33ffffff"
+					android:gravity="center"
+					android:orientation="vertical">
 
 					<LinearLayout
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
-						android:layout_weight="0.5"
-						android:background="#ff9944"
-						android:padding="@dimen/NumerosBorder"
-						android:id="@+id/lay_um">
+						android:layout_weight="0.5">
 
-						<Button
+						<LinearLayout
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"
-							android:text="1"
-							android:textSize="@dimen/Numeros"
-							android:background="#33000000"
-							android:onClick="btnClick"
-							android:id="@+id/um"/>
+							android:layout_weight="0.5"
+							android:background="#ff9944"
+							android:padding="@dimen/NumerosBorder"
+							android:id="@+id/lay_um">
+
+							<Button
+								android:layout_width="match_parent"
+								android:layout_height="match_parent"
+								android:text="1"
+								android:textSize="@dimen/Numeros"
+								android:background="#33000000"
+								android:onClick="btnClick"
+								android:id="@+id/um"/>
+
+						</LinearLayout>
+
+						<LinearLayout
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_weight="0.5"
+							android:background="#1177ff"
+							android:padding="@dimen/NumerosBorder"
+							android:id="@+id/lay_dois">
+
+							<Button
+								android:layout_width="fill_parent"
+								android:layout_height="fill_parent"
+								android:text="2"
+								android:textSize="@dimen/Numeros"
+								android:background="#33000000"
+								android:onClick="btnClick"
+								android:id="@+id/dois"/>
+
+						</LinearLayout>
 
 					</LinearLayout>
 
 					<LinearLayout
 						android:layout_width="match_parent"
 						android:layout_height="match_parent"
-						android:layout_weight="0.5"
-						android:background="#1177ff"
-						android:padding="@dimen/NumerosBorder"
-						android:id="@+id/lay_dois">
+						android:layout_weight="0.5">
 
-						<Button
-							android:layout_width="fill_parent"
-							android:layout_height="fill_parent"
-							android:text="2"
-							android:textSize="@dimen/Numeros"
-							android:background="#33000000"
-							android:onClick="btnClick"
-							android:id="@+id/dois"/>
+						<LinearLayout
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_weight="0.5"
+							android:background="#22ff44"
+							android:padding="@dimen/NumerosBorder"
+							android:id="@+id/lay_tres">
 
-					</LinearLayout>
-
-				</LinearLayout>
-
-				<LinearLayout
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:layout_weight="0.5">
-
-					<LinearLayout
-						android:layout_width="match_parent"
-						android:layout_height="match_parent"
-						android:layout_weight="0.5"
-						android:background="#22ff44"
-						android:padding="@dimen/NumerosBorder"
-						android:id="@+id/lay_tres">
-
-						<Button
-							android:layout_width="fill_parent"
-							android:layout_height="fill_parent"
-							android:text="3"
-							android:textSize="@dimen/Numeros"
-							android:background="#33000000"
-							android:onClick="btnClick"
-							android:id="@+id/tres"/>
+							<Button
+								android:layout_width="fill_parent"
+								android:layout_height="fill_parent"
+								android:text="3"
+								android:textSize="@dimen/Numeros"
+								android:background="#33000000"
+								android:onClick="btnClick"
+								android:id="@+id/tres"/>
 
 
-					</LinearLayout>
+						</LinearLayout>
 
-					<LinearLayout
-						android:layout_width="match_parent"
-						android:layout_height="match_parent"
-						android:layout_weight="0.5"
-						android:padding="@dimen/NumerosBorder"
-						android:background="#ff3322"
-						android:id="@+id/lay_quatro">
+						<LinearLayout
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:layout_weight="0.5"
+							android:padding="@dimen/NumerosBorder"
+							android:background="#ff3322"
+							android:id="@+id/lay_quatro">
 
-						<Button
-							android:layout_width="fill_parent"
-							android:layout_height="fill_parent"
-							android:text="4"
-							android:textSize="@dimen/Numeros"
-							android:background="#33000000"
-							android:onClick="btnClick"
-							android:id="@+id/quatro"/>
+							<Button
+								android:layout_width="fill_parent"
+								android:layout_height="fill_parent"
+								android:text="4"
+								android:textSize="@dimen/Numeros"
+								android:background="#33000000"
+								android:onClick="btnClick"
+								android:id="@+id/quatro"/>
+
+						</LinearLayout>
 
 					</LinearLayout>
 
 				</LinearLayout>
 
 			</LinearLayout>
-			
-		</LinearLayout>
-		
-		<RelativeLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:paddingRight="40dp"
-			android:paddingLeft="40dp"
-			android:paddingTop="10dp"
-			android:paddingBottom="10dp">
 
-			<ProgressBar
+			<RelativeLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				style="@android:style/Widget.ProgressBar.Horizontal"
-				android:id="@+id/Progresso"/>
+				android:paddingRight="40dp"
+				android:paddingLeft="40dp"
+				android:paddingTop="10dp"
+				android:paddingBottom="10dp">
 
-			<TextView
+				<ProgressBar
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					style="@android:style/Widget.ProgressBar.Horizontal"
+					android:id="@+id/Progresso"/>
+
+				<TextView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textSize="@dimen/Pontos"
+					android:textColor="#ffffff"
+					android:gravity="center"
+					android:visibility="gone"
+					android:id="@+id/main_decrement"/>
+
+			</RelativeLayout>
+
+			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:textSize="@dimen/Pontos"
-				android:textColor="#ffffff"
+				android:layout_weight="0.1"
 				android:gravity="center"
-				android:visibility="gone"
-				android:id="@+id/main_decrement"/>
+				android:orientation="vertical">
 
-		</RelativeLayout>
-		
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="0.1"
-			android:gravity="center"
-			android:orientation="vertical">
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="by: Davi Inácio"/>
 
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="by: Davi Inácio"/>
-			
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/app_version"
-				android:id="@+id/main_version"/>
-			
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/copyright"/>
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/app_version"
+					android:id="@+id/main_version"/>
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/copyright"/>
+
+			</LinearLayout>
 
 		</LinearLayout>
 		
 	</LinearLayout>
 	
+	<!--com.google.android.gms.ads.AdView
+		xmlns:ads="http://schemas.android.com/apk/res-auto"
+		android:id="@+id/adView"
+		android:background="#ffdd00"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerHorizontal="true"
+		android:layout_alignParentBottom="true"
+		ads:adSize="BANNER"
+		ads:adUnitId="ca-app-pub-1507172442893539/5464430854">
+	</com.google.android.gms.ads.AdView-->
 	
-	
-</LinearLayout>
+</RelativeLayout>

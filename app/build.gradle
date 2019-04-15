@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.daviapps.numeros"
-        minSdkVersion 10
+        minSdkVersion 14
         targetSdkVersion 21
         versionCode 1
         versionName "@string/app_version"
@@ -21,5 +21,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar']);
+    implementation fileTree(dir: 'libs', include: ['*.jar']);
+	implementation 'com.google.android.gms:play-services-ads-lite:17.2.0'
 }

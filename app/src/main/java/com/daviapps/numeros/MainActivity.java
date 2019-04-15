@@ -16,6 +16,12 @@ import java.io.*;
 import org.json.*;
 import java.net.*;
 import android.net.*;
+import android.preference.*;
+import com.google.android.gms.ads.*;
+import com.daviapps.numeros.domain.*;
+import com.daviapps.numeros.internet.*;
+import com.daviapps.numeros.dialog.*;
+import com.daviapps.numeros.old.*;
 
 public class MainActivity extends Activity {
 	/*
@@ -25,10 +31,10 @@ public class MainActivity extends Activity {
 		version 1.5.2 :: done
 		 - Update downloader
 		 
-		version 1.5.3
+		version 1.5.3 :: done
 		 - File path changed
 	
-		version 1.5.4
+		version 1.5.4 :: done
 		 - Replace JSONPreferences to SharedPreferences
 		 - Remove JSONOreferences
 		 
@@ -74,7 +80,7 @@ public class MainActivity extends Activity {
 	private LinearLayout[] lay_cor;
 	private TextView score;
 	private ProgressBar time;
-	private LinearLayout main_lay;
+	private RelativeLayout main_lay;
 	private TextView decrement_text;
 
 	// Variables
@@ -109,9 +115,8 @@ public class MainActivity extends Activity {
 	// Config
 	//public static DCodePreferences _old_prefs;
 	//public static DCodePreferences3 preferences;
-	public static Preferences <String, String> json_prefs;
-	
-	
+	//public static Preferences <String, String> json_prefs;
+	private SharedPreferences prefs;
 	
 	// Database
 	//public static Dcode
@@ -132,12 +137,11 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-
 		// Variables
 		btns_num = new int[btns_length];
 		btns_cor = new int[btns_length];
 		buffer = new int[btns_length];
-		
+
 		tempo = T_MED;
 
 		// Static variables
@@ -156,90 +160,96 @@ public class MainActivity extends Activity {
 			};
 
 		// Components
-		 btns = new Button[]{
-		 	(Button) findViewById(R.id.um),
+		btns = new Button[]{
+			(Button) findViewById(R.id.um),
 		 	(Button) findViewById(R.id.dois),
 			(Button) findViewById(R.id.tres),
 		 	(Button) findViewById(R.id.quatro)
-		 };
+		};
 
-		 lay_cor = new LinearLayout[]{
-		 	(LinearLayout) findViewById(R.id.lay_um),
+		lay_cor = new LinearLayout[]{
+			(LinearLayout) findViewById(R.id.lay_um),
 		 	(LinearLayout) findViewById(R.id.lay_dois),
 		 	(LinearLayout) findViewById(R.id.lay_tres),
 		 	(LinearLayout) findViewById(R.id.lay_quatro)
-		 };
-		 
-		 score = (TextView) findViewById(R.id.pontos);
-		 time = (ProgressBar) findViewById(R.id.Progresso);
-		 
-		 time.setMax(T_MAX);
-		 time.setProgress(tempo);
-		 
-		 
-		 
-		 decrement_text = (TextView) findViewById(R.id.main_decrement);
+		};
 
-		 TextView version = (TextView) findViewById(R.id.main_version);
-		 version.setText("versão: " + version.getText());
+		score = (TextView) findViewById(R.id.pontos);
+		time = (ProgressBar) findViewById(R.id.Progresso);
 
-		 main_lay = (LinearLayout) findViewById(R.id.main_lay);
-		 
-		 //debug
-		 //ErrorDialog.show(this, "Package", getExternalFilesDir("update.apk").getPath());
-		 
-		 // Config
-		 
-		 try {
-			 this.json_prefs = new JSONPreferences(this, "settings.json");
-			 
-		 } catch(IOException ex){
-			 ErrorDialog.show(this, "Fatal Error", "MainActivity.onCreate(): Init prefs error \n" + ex.getMessage(), new DialogInterface.OnDismissListener () {
-				 @Override
-				 public void onDismiss(DialogInterface p1){
-					 MainActivity.this.finish();
-				 }
-			 });
-		 }
-		 
-		 // Database
-		 try {
-			 ddb.setup(this);
-			 
-		 } catch (Exception e){
-			 new AlertDialog.Builder(this)
-			 	.setPositiveButton("Ok", null)
-			 	.setTitle("Database setup error")
-				.setMessage(e.getMessage())
-				.show();
-		 }
+		time.setMax(T_MAX);
+		time.setProgress(tempo);
 
-		 // Timer
-		 try {
-			 t = new Timer();
-			 t.scheduleAtFixedRate(new TimerTask() {         
-					 @Override
-					 public void run() {
-						 runOnUiThread(new Runnable(){
-								 @Override
-								 public void run(){
-									 if(run){
-										 if(state == S_RUNNING){
-											 if(tempo > T_MIN){
-												 tempo -= (decrement > 1 ? decrement : 1) * levels[currentLevel].velocity;
-												 if(tempo <= T_MIN)
-													 perdeu();
-											 }
-										 }
-										 updateVisual();
-									 }
-								 }
-							 });
-					 }
-				 }, tm, tm);
-		 } catch(Exception ex){
-			 ErrorDialog.show(this, "Timer define", ex.getMessage());
-		 }
+		decrement_text = (TextView) findViewById(R.id.main_decrement);
+
+		TextView version = (TextView) findViewById(R.id.main_version);
+		version.setText("versão: " + version.getText());
+
+		main_lay = (RelativeLayout) findViewById(R.id.main_lay);
+
+		//debug
+		//ErrorDialog.show(this, "Package", getExternalFilesDir("update.apk").getPath());
+
+		// Config
+		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+
+		// AdMob
+		MobileAds.initialize(this, "ca-app-pub-1507172442893539~2844160460");
+
+		try {
+			AdView adView = new AdView(this);
+			adView.setAdSize(AdSize.BANNER);
+			adView.setAdUnitId("ca-app-pub-1507172442893539/5464430854");
+
+			AdRequest.Builder adRequest = new AdRequest.Builder();
+
+			adView.setAdListener(new AdListener(){
+					@Override
+					public void onAdLoaded(){
+						Toast.makeText(MainActivity.this, "Admob: loaded", Toast.LENGTH_SHORT).show();
+					}
+
+					@Override
+					public void onAdFailedToLoad(int p1){
+						Toast.makeText(MainActivity.this, "AdMob: Fail to load (" + p1 + ")", Toast.LENGTH_SHORT).show();
+					}
+				});
+
+			adView.loadAd(adRequest.build());
+
+
+		}
+		catch(Exception ex){
+			ErrorDialog.show(this, "AdMob - " + ex.getClass().getName(), ex.getMessage());
+		}
+
+		// Timer
+		try {
+			t = new Timer();
+			t.scheduleAtFixedRate(new TimerTask() {         
+					@Override
+					public void run() {
+						runOnUiThread(new Runnable(){
+								@Override
+								public void run(){
+									if(run){
+										if(state == S_RUNNING){
+											if(tempo > T_MIN){
+												tempo -= (decrement > 1 ? decrement : 1) * levels[currentLevel].velocity;
+												if(tempo <= T_MIN)
+													perdeu();
+											}
+										}
+										updateVisual();
+									}
+								}
+							});
+					}
+				}, tm, tm);
+		} catch(Exception ex){
+			ErrorDialog.show(this, "Timer define", ex.getMessage());
+		}
 
 		try {
 			refresh();
@@ -291,7 +301,7 @@ public class MainActivity extends Activity {
 	public void refresh(){
 		//if(!charMode)	btns_num = getRandomArray(9, 0, btns_num);
 		if(!levels[currentLevel].charMode)	btns_num = getRandomArray(9, 0, btns_num);
-		else			btns_num = getRandomArray(25, 0, btns_num);
+		else btns_num = getRandomArray(25, 0, btns_num);
 			
 		btns_cor = getRandomArray(cor.length -1, 0, btns_cor);
 
@@ -309,7 +319,7 @@ public class MainActivity extends Activity {
 		Button button = (Button) v;
 		button.setEnabled(false);
 		
-		boolean order = this.json_prefs.getBoolean(PREFS_ORDER, false);
+		boolean order = this.prefs.getBoolean(PREFS_ORDER, false);
 		
 		int num = 0;
 		
@@ -358,7 +368,7 @@ public class MainActivity extends Activity {
 				return;
 			}
 			
-			if(this.json_prefs.getInt(PREFS_D_SCORE, 0) > 0){
+			if(this.prefs.getInt(PREFS_D_SCORE, 0) > 0){
 				
 				new AlertDialog.Builder(this)
 					.setTitle("Partida pendente")
@@ -369,12 +379,12 @@ public class MainActivity extends Activity {
 							MainActivity.this.state = S_PAUSED;
 
 							// Load game states
-							MainActivity.this.tempo = MainActivity.this.json_prefs.getInt(PREFS_D_TEMPO, 0);
-							MainActivity.this.pontos = MainActivity.this.json_prefs.getInt(PREFS_D_SCORE, 0);
-							MainActivity.this.acertos = MainActivity.this.json_prefs.getInt(PREFS_D_ACERTOS, 0);
-							MainActivity.this.erros = MainActivity.this.json_prefs.getInt(PREFS_D_ERRORS, 0);
-							MainActivity.this.increment = MainActivity.this.json_prefs.getInt(PREFS_D_INCREMENT, 0);
-							MainActivity.this.decrement = MainActivity.this.json_prefs.getInt(PREFS_D_DECREMENT, 0);
+							MainActivity.this.tempo = MainActivity.this.prefs.getInt(PREFS_D_TEMPO, 0);
+							MainActivity.this.pontos = MainActivity.this.prefs.getInt(PREFS_D_SCORE, 0);
+							MainActivity.this.acertos = MainActivity.this.prefs.getInt(PREFS_D_ACERTOS, 0);
+							MainActivity.this.erros = MainActivity.this.prefs.getInt(PREFS_D_ERRORS, 0);
+							MainActivity.this.increment = MainActivity.this.prefs.getInt(PREFS_D_INCREMENT, 0);
+							MainActivity.this.decrement = MainActivity.this.prefs.getInt(PREFS_D_DECREMENT, 0);
 							
 							MainActivity.this.run = true;
 						}
@@ -402,7 +412,7 @@ public class MainActivity extends Activity {
 		}
 		
 		if(!update_asked){
-			Updater.checkForUpdate(this);
+			UpdateChecker.check(this);
 			update_asked = true;
 		}
 		
@@ -416,13 +426,18 @@ public class MainActivity extends Activity {
 		// Save game state
 		if(state != S_STOPED){
 			Toast.makeText(this, "Partida salva", Toast.LENGTH_SHORT).show();
-
-			this.json_prefs.put(PREFS_D_TEMPO, tempo);
-			this.json_prefs.put(PREFS_D_SCORE, pontos);
-			this.json_prefs.put(PREFS_D_ACERTOS, acertos);
-			this.json_prefs.put(PREFS_D_ERRORS, erros);
-			this.json_prefs.put(PREFS_D_INCREMENT, increment);
-			this.json_prefs.put(PREFS_D_DECREMENT, decrement);
+			
+			SharedPreferences.Editor edit = this.prefs.edit();
+			
+			edit.putInt(PREFS_D_TEMPO, tempo);
+			edit.putInt(PREFS_D_SCORE, pontos);
+			edit.putInt(PREFS_D_ACERTOS, acertos);
+			edit.putInt(PREFS_D_ERRORS, erros);
+			edit.putInt(PREFS_D_INCREMENT, increment);
+			edit.putInt(PREFS_D_DECREMENT, decrement);
+			
+			edit.commit();
+			edit.apply();
 		}
 		
 		if(this.state == S_RUNNING)
@@ -457,12 +472,17 @@ public class MainActivity extends Activity {
 		state = S_STOPED;
 		
 		// Clean preferences
-		this.json_prefs.put(PREFS_D_TEMPO, tempo);
-		this.json_prefs.put(PREFS_D_SCORE, pontos);
-		this.json_prefs.put(PREFS_D_ACERTOS, acertos);
-		this.json_prefs.put(PREFS_D_ERRORS, erros);
-		this.json_prefs.put(PREFS_D_INCREMENT, increment);
-		this.json_prefs.put(PREFS_D_DECREMENT, decrement);
+		SharedPreferences.Editor edit = this.prefs.edit();
+
+		edit.putInt(PREFS_D_TEMPO, tempo);
+		edit.putInt(PREFS_D_SCORE, pontos);
+		edit.putInt(PREFS_D_ACERTOS, acertos);
+		edit.putInt(PREFS_D_ERRORS, erros);
+		edit.putInt(PREFS_D_INCREMENT, increment);
+		edit.putInt(PREFS_D_DECREMENT, decrement);
+
+		edit.commit();
+		edit.apply();
 	}
 	
 	// Level functions
@@ -495,7 +515,7 @@ public class MainActivity extends Activity {
 	public void perdeu(){
 		som(A_PERDEU);
 		
-		Score sc = new Score(json_prefs.getInt(PREFS_PLAYER, 1), acertos, erros, pontos);
+		/*Score sc = new Score(prefs.getInt(PREFS_PLAYER, 1), acertos, erros, pontos);
 		
 		(new PerdeuDialog(this, sc){
 			@Override
@@ -503,7 +523,7 @@ public class MainActivity extends Activity {
 				this.dismiss();
 				new ScoreDialog(MainActivity.this).show();
 			}
-		}).show();
+		}).show();*/
 		
 		
 		
@@ -522,7 +542,7 @@ public class MainActivity extends Activity {
 
 	// Audio
 	public void som(int audioId){
-		if(json_prefs.getBoolean(PREFS_AUDIO, false))
+		if(prefs.getBoolean(PREFS_AUDIO, false))
 			if(audioId == A_ACERTOU)
 				;
 			else if(audioId == A_ERROU)
@@ -536,7 +556,10 @@ public class MainActivity extends Activity {
 	// Menu item
 	public void confAudio(boolean active){
 		try{
-			this.json_prefs.put(PREFS_AUDIO, active);
+			SharedPreferences.Editor edit = this.prefs.edit();
+			edit.putBoolean(PREFS_AUDIO, active);
+			edit.commit();
+			edit.apply();
 
 		} catch(NullPointerException ex){
 			ErrorDialog.show(this, "MainActivity.confAudio()", ex.getMessage());
@@ -552,7 +575,10 @@ public class MainActivity extends Activity {
 
 	public void confOrder(boolean order){
 		try{
-			this.json_prefs.put(PREFS_ORDER, order);
+			SharedPreferences.Editor edit = this.prefs.edit();
+			edit.putBoolean(PREFS_ORDER, order);
+			edit.commit();
+			edit.apply();
 			
 		} catch(NullPointerException ex){
 			ErrorDialog.show(this, "MainActivity.confOrder()", ex.getMessage());
@@ -570,8 +596,8 @@ public class MainActivity extends Activity {
 			audioMenu = menu.findItem(R.id.menu_som_power);
 			orderMenu = menu.findItem(R.id.menu_mode);
 			
-			confAudio(this.json_prefs.getBoolean(PREFS_AUDIO, false));
-			confOrder(this.json_prefs.getBoolean(PREFS_ORDER, true));
+			confAudio(this.prefs.getBoolean(PREFS_AUDIO, false));
+			confOrder(this.prefs.getBoolean(PREFS_ORDER, true));
 			
 		} catch(Exception ex){
 			ErrorDialog.show(this, "onPrepareOptionsMenu", ex.getMessage());
@@ -593,13 +619,14 @@ public class MainActivity extends Activity {
 
         if (id == R.id.menu_info) return true; else 
 		if (id == R.id.menu_info_pontos){
-			run = false;
+			Toast.makeText(this, "Função em desenvolvimento", Toast.LENGTH_SHORT).show();
+			/*run = false;
 			new ScoreDialog(MainActivity.this){
 				@Override
 				public void onStop(){
 					run = true;
 				}
-			}.show();
+			}.show();*/
 		}
 		else
 		if (id == R.id.menu_info_settings){
@@ -607,22 +634,23 @@ public class MainActivity extends Activity {
 		}
 		else
 		if (id == R.id.menu_info_players){
-			run = false;
+			Toast.makeText(this, "Função em desenvolvimento", Toast.LENGTH_SHORT).show();
+			/*run = false;
 			new PlayerDialog(MainActivity.this){
 				@Override
 				public void onStop(){
 					run = true;
 				}
-			}.show();
+			}.show();*/
 		}
 		else
 		if (id == R.id.menu_som_power) {
-			confAudio(!this.json_prefs.getBoolean(PREFS_AUDIO, false));
+			confAudio(!this.prefs.getBoolean(PREFS_AUDIO, false));
             return true;
 		}
 		else 
 		if(id == R.id.menu_mode) {
-			confOrder(!this.json_prefs.getBoolean(PREFS_ORDER, false));
+			confOrder(!this.prefs.getBoolean(PREFS_ORDER, false));
 			refresh();
             return true;
 		}
@@ -631,591 +659,7 @@ public class MainActivity extends Activity {
     }
 }
 
-// Uploader prototype
-class Updater {
-	public static boolean checkForUpdate(Context context){
-		new UpdateChecker(context).execute(context.getString(R.string.update_index));
-		
-		return false;
-	}
-}
 
-class ApkVersion {
-	private Version version;
-	private Date release_date;
-	private URL link;
-	
-	public ApkVersion(){}
-	
-	public ApkVersion(Version version, Date release_date, URL link){
-		this.version = version; this.release_date = release_date; this.link = link;
-	}
 
-	public void setVersion(Version version){ this.version = version; }
-	public Version getVersion(){ return version; }
 
-	public void setReleaseDate(Date release_date){ this.release_date = release_date; }
-	public Date getReleaseDate(){ return release_date; }
 
-	public void setLink(URL link){ this.link = link; }
-	public URL getLink(){ return link; }
-}
-
-class UpdateChecker extends AsyncTask<String, Integer, ApkVersion> {
-	private static int S_ALRIGHT = 1, S_EX_IO = 2, S_EX_JSON;
-	
-	private Context context;
-	private int status = 0;
-	
-	public UpdateChecker(Context context){
-		this.context = context;
-	}
-
-	@Override
-	protected void onPreExecute(){
-		//Toast.makeText(this.context, "Buscando atualizações..", Toast.LENGTH_SHORT).show();
-	}
-
-	@Override
-	protected ApkVersion doInBackground(String..._url){
-		ApkVersion version = null;
-		
-		try {
-			URL url = new URL(_url[0]);
-			//Scanner sc = new Scanner(new InputStreamReader(url.openStream())).useDelimiter("\\A");
-			Scanner sc = new Scanner(url.openStream()).useDelimiter("\\A");
-			
-			JSONArray dLinks = new JSONArray(sc.next());
-			
-			sc.close();
-			
-			for(int i = 0; i < dLinks.length(); i++){
-				// Load json index
-				JSONObject dApp = dLinks.getJSONObject(i);
-				
-				// Check application name
-				if(dApp.getString("name").equals(this.context.getString(R.string.app_name))){
-					JSONArray dVersions = dApp.getJSONObject("platforms").getJSONArray("android");
-					JSONObject lastVersion = dVersions.getJSONObject(0);
-					
-					version = new ApkVersion();
-					
-					version.setVersion(new Version(lastVersion.getJSONArray("version").join(".")));
-					version.setReleaseDate(new Date(lastVersion.getJSONArray("release_date").join("/")));
-					version.setLink(new URL(lastVersion.getString("link")));
-					
-					status = S_ALRIGHT;
-					
-					break;
-				}
-			}
-
-		}
-		catch (JSONException ex){ status = S_EX_JSON; }
-		catch (IOException ex){ status = S_EX_IO; }
-		
-		return version;
-	}
-
-	@Override
-	protected void onPostExecute(final ApkVersion result){
-		try {
-			if(status == S_ALRIGHT){
-				if(result != null){
-					int compare = result.getVersion().compareTo(new Version(this.context.getString(R.string.app_version)));
-
-					// Aplicatico desatualizado
-					if(compare == 1){
-						//Toast.makeText(this.context, "Nova versão disponível", Toast.LENGTH_SHORT).show();
-
-						new AlertDialog.Builder(this.context)
-							.setCancelable(false)
-							.setTitle("Nova atualização disponível")
-							.setMessage(String.format("Versão: %s\nLançado em: %s", result.getVersion(), result.getReleaseDate().toLocaleString().split(" 00")[0]))
-							.setPositiveButton("Atualizar", new DialogInterface.OnClickListener(){
-								@Override
-								public void onClick(DialogInterface p1, int p2){
-									new UpdateDownloader(UpdateChecker.this.context).execute(result);
-								}
-							})
-							.setNegativeButton("Ignorar", null)
-							.show();
-					}
-
-
-				} else
-					Toast.makeText(this.context, "Não foi possivel carregar a última versão.", Toast.LENGTH_LONG).show();
-
-				this.cancel(true);
-			}
-			else
-			if(status == S_EX_IO)
-				Toast.makeText(this.context, "Não foi possivel buscar novas atualizações.\nVerifique a sua conexão com a internet.", Toast.LENGTH_LONG).show();
-			else
-			if(status == S_EX_JSON)
-				Toast.makeText(this.context, "O index de download está corrompido.", Toast.LENGTH_LONG).show();
-			else
-				Toast.makeText(this.context, "Aconteceu um erro inesperado ao obter novas atualizações.", Toast.LENGTH_LONG).show();
-			
-		}
-		catch(Exception ex){
-			ErrorDialog.show(this.context, "UpdateChecker.onPostExecute", ex.getClass().getName() + " - " + ex.getMessage());
-		}
-		
-		super.onPostExecute(result);
-	}
-}
-
-class UpdateDownloader extends AsyncTask<ApkVersion, Integer, File> {
-	private Context context;
-	private ProgressDialog dialog;
-	
-	public UpdateDownloader(Context context){
-		this.context = context;
-		this.dialog = new ProgressDialog(context);
-	}
-
-	@Override
-	protected void onPreExecute(){
-		this.dialog.setCancelable(false);
-		this.dialog.setTitle("Baixando");
-		this.dialog.setProgressNumberFormat("%1dKB / %2dKB");
-		this.dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		this.dialog.setMax(1);
-		this.dialog.show();
-		
-		super.onPreExecute();
-	}
-
-	@Override
-	protected void onProgressUpdate(Integer...progress){
-		this.dialog.setProgress(progress[0]);
-		
-		super.onProgressUpdate(progress);
-	}
-
-	@Override
-	protected File doInBackground(ApkVersion...lastVersion){
-		try {
-			int download_length_divide = 1024;
-			
-			URL url = lastVersion[0].getLink();
-			File file = this.context.getExternalFilesDir("update.apk");
-			
-			// Network input
-			
-			HttpURLConnection ct = (HttpURLConnection) url.openConnection();
-			//ct.setRequestMethod("GET");
-			//ct.setDoInput(true);
-			ct.connect();
-			
-			this.dialog.setMax(ct.getContentLength() / download_length_divide);
-			
-			// 8k buffer
-			InputStream is = new BufferedInputStream(url.openStream(), 8129);
-			
-			// File output
-			file.getParentFile().mkdirs();
-			
-			if(file.exists())
-				file.delete();
-			
-			OutputStream os = new FileOutputStream(file);
-			byte data[] = new byte[1024];
-			int count = 0;
-			int progress = 0;
-			
-			// Write file
-			while((count = is.read(data)) != -1){
-				progress += count;
-				publishProgress(progress / download_length_divide);
-				
-				os.write(data, 0, count);
-				
-				//try{Thread.sleep(10);} catch(Exception ex){}
-			}
-			
-			os.flush();
-			
-			os.close();
-			is.close();
-			
-			return file;
-			
-			
-		} catch(IOException ex){ return null; }
-	}
-
-	@Override
-	protected void onPostExecute(final File result){
-		this.dialog.dismiss();
-		
-		if(result == null){
-			this.dialog.dismiss();
-			Toast.makeText(context, "Download error", Toast.LENGTH_SHORT).show();
-			return;
-		}
-		
-		new AlertDialog.Builder(this.context)
-			.setTitle("Download concluido")
-			.setMessage("Agora falta pouco.\nPressione INSTALAR para concluir")
-			.setCancelable(false)
-			.setPositiveButton("Instalar", new DialogInterface.OnClickListener(){
-				@Override
-				public void onClick(DialogInterface p1, int p2){
-					Intent intent = new Intent(Intent.ACTION_VIEW);
-					Uri uri = Uri.fromFile(result);
-					
-					intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, uri);
-					intent.setDataAndType(uri, "application/vnd.android.package-archive");
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-					intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-					
-					context.startActivity(intent);
-				}
-			})
-			.show();
-		
-		
-		super.onPostExecute(result);
-	}
-}
-
-// Preferences prototype
-
-interface Preferences <K extends Object, V extends Object> {
-	void put(K key, V value);
-	void put(K key, int value);
-	void put(K key, float value);
-	void put(K key, boolean value);
-
-	V get(K key);
-	V get(K key, V notFound);
-	int getInt(K key);
-	int getInt(K key, int notFound);
-	float getFloat(K key);
-	float getFloat(K key, float notFound);
-	boolean getBoolean(K key);
-	boolean getBoolean(K key, boolean notFound);
-
-	boolean contains(K key);
-	void remove(K key);
-	void clear();
-}
-
-class JSONPreferences implements Preferences<String, String> {
-
-	// Properties
-	private Map <String, String> items;
-	private Map <String, String> metas;
-
-	// java.io
-	private File file;
-
-	//private static String fileExt = "json";
-	private static String JW_KEY = "key";
-	private static String JW_VALUE = "value";
-
-	public JSONPreferences(Context ct, String fileName) throws IOException {
-		this(new File(ct.getFilesDir(), fileName));
-		//this(String.format("android/data/%s/%s", ct.getPackageName(), fileName));
-	}
-
-	public JSONPreferences(String fileName) throws IOException {
-		this(new File(Environment.getExternalStorageDirectory(), fileName));
-	}
-
-	public JSONPreferences(File file) throws IOException {
-		this.file = file;
-		this.items = new HashMap<>();
-		this.metas = new HashMap<>();
-
-		this.read();
-	}
-
-	@Override
-	public void put(String key, String value){
-		this.items.put(key, value);
-		this.tryWrite();
-	}
-
-	@Override
-	public void remove(String key){
-		this.items.remove(key);
-		this.tryWrite();
-	}
-
-	@Override
-	public String get(String key){
-		return this.get(key, null);
-	}
-
-	@Override
-	public String get(String key, String notFound){
-		return this.items.containsKey(key) ? this.items.get(key) : notFound;
-	}
-
-	@Override
-	public boolean contains(String key){
-		return this.items.containsKey(key);
-	}
-
-	@Override
-	public void clear(){
-		this.items.clear();
-		this.tryWrite();
-	}
-
-	// More Getters and Setters
-
-	public void put(String key, int value){
-		this.put(key, Integer.toString(value));
-	}
-
-	public void put(String key, float value){
-		this.put(key, Float.toString(value));
-	}
-
-	public void put(String key, boolean value){
-		this.put(key, Boolean.toString(value));
-	}
-
-	@Override
-	public int getInt(String key){
-		return this.getInt(key, 0);
-	}
-
-	@Override
-	public int getInt(String key, int notFound){
-		return (int) Float.parseFloat(this.get(key, Integer.toString(notFound)));
-	}
-
-	@Override
-	public float getFloat(String key){
-		return this.getFloat(key, 0);
-	}
-
-	@Override
-	public float getFloat(String key, float notFound){
-		return Float.parseFloat(this.get(key, Float.toString(notFound)));
-	}
-
-	@Override
-	public boolean getBoolean(String key){
-		return this.getBoolean(key, false);
-	}
-
-	@Override
-	public boolean getBoolean(String key, boolean notFound){
-		return Boolean.parseBoolean(this.get(key, Boolean.toString(notFound)));
-	}
-
-	// File methods
-	private void read() throws IOException {
-		System.out.println("JSONPreferences.read()");
-		if(!this.file.exists()){
-			this.create();
-			return;
-		}
-
-		// Read file
-		InputStream is = new FileInputStream(file);
-		InputStreamReader isr = new InputStreamReader(is);
-		BufferedReader br = new BufferedReader(isr);
-
-		StringBuilder sb = new StringBuilder();
-
-		while(br.ready())
-			sb.append(br.readLine());
-
-		br.close(); isr.close(); is.close();
-
-		// JSON implements
-
-		try {
-			// Parse file data to JSON Object
-			JSONObject obj = new JSONObject(sb.toString());
-
-			// Get the meta array
-			if(!obj.isNull("metas")){
-				JSONArray mts = obj.getJSONArray("metas");
-
-				for(int i = 0; i < mts.length(); i++) {
-					JSONObject mt = mts.getJSONObject(i);
-					// Put the data on hash set
-					this.metas.put(mt.getString(JW_KEY), mt.getString(JW_VALUE));
-				}
-
-				// Debug
-				System.out.println("JSONPreferences.read() - Debug.metas");
-				for(String key : this.metas.keySet()){
-					System.out.println(String.format("%s: %s", key, this.metas.get(key)));
-					//System.out.println(String.format("key: %s, value: %s", key, this.metas.get(key)));
-				}
-				System.out.println();
-			}
-
-			// Get the preferences array
-			if(!obj.isNull("preferences")){
-				JSONArray prefs = obj.getJSONArray("preferences");
-
-				for(int i = 0; i < prefs.length(); i++) {
-					JSONObject pr = prefs.getJSONObject(i);
-					// Put the data on hash set
-					this.items.put(pr.getString(JW_KEY), pr.getString(JW_VALUE));
-				}
-
-				// Debug
-				System.out.println("JSONPreferences.read() - Debug.items");
-				for(String key : this.items.keySet()){
-					System.out.println(String.format("%s: %s", key, this.items.get(key)));
-					//System.out.println(String.format("key: %s, value: %s", key, this.items.get(key)));
-				}
-				System.out.println();
-			}
-
-		} catch (JSONException ex){
-			System.out.println("JSONPreferences.read(): JSONException - " + ex.getMessage());
-		}
-	}
-
-	private void write() throws IOException {
-		System.out.println("JSONPreferences.write()");
-
-		// Create file if not exists
-		if(!this.file.exists()){
-			this.create();
-			return;
-		}
-
-		OutputStream os = new FileOutputStream(file);
-		OutputStreamWriter osw = new OutputStreamWriter(os);
-		BufferedWriter bw = new BufferedWriter(osw);
-
-		// JSON implements
-		try {
-			JSONObject obj = new JSONObject();
-
-			// Put the meta array
-			JSONArray mts = new JSONArray();
-
-			for(String key : this.metas.keySet()){
-				JSONObject mt = new JSONObject();
-
-				mt.put("key", key);
-				mt.put("value", this.metas.get(key));
-
-				mts.put(mt);
-			}
-
-			obj.put("metas", mts);
-
-			// Put the preferences array
-			JSONArray prefs = new JSONArray();
-
-			for(String key : this.items.keySet()){
-				JSONObject pr = new JSONObject();
-
-				pr.put("key", key);
-				pr.put("value", this.items.get(key));
-
-				prefs.put(pr);
-			}
-
-			obj.put("preferences", prefs);
-
-			// Put JSON data to file
-			bw.append(obj.toString());
-
-			// Close file streamers
-			bw.close(); osw.close(); os.close();
-
-		} catch(JSONException ex){
-			System.out.println("JSONPreferences.write(): JSONException - " + ex.getMessage());
-		}
-	}
-
-	private void tryRead(){
-		try { this.read(); }
-		catch(IOException ex){
-			System.out.println("JSONPreferences.tryRead(): IOException - " + ex.getMessage());
-		}
-	}
-
-	private void tryWrite(){
-		try { this.write(); }
-		catch(IOException ex){
-			System.out.println("JSONPreferences.tryWite(): IOException - " + ex.getMessage());
-		}
-	}
-
-	private void create () throws IOException {
-		System.out.println("JSONPreferences.create()");
-		// Create old file case exists
-		if(this.file.exists())
-			this.file.delete();
-
-		// Create file parent diretory
-		this.file.getParentFile().mkdirs();
-		// Create a new file
-		this.file.createNewFile();
-
-		// Write beginner data
-		this.write();
-	}
-}
-
-// FullStackOverFlow Code
-
-class Version implements Comparable<Version> {
-
-    private String version;
-
-    public final String get() {
-        return this.version;
-    }
-
-    public Version(String version) {
-        if(version == null)
-            throw new IllegalArgumentException("Version can not be null");
-        if(!version.matches("[0-9]+(\\.[0-9]+)*"))
-            throw new IllegalArgumentException("Invalid version format");
-        this.version = version;
-    }
-
-    @Override
-	public int compareTo(Version that) {
-        if(that == null)
-            return 1;
-        String[] thisParts = this.get().split("\\.");
-        String[] thatParts = that.get().split("\\.");
-        int length = Math.max(thisParts.length, thatParts.length);
-        for(int i = 0; i < length; i++) {
-            int thisPart = i < thisParts.length ?
-                Integer.parseInt(thisParts[i]) : 0;
-            int thatPart = i < thatParts.length ?
-                Integer.parseInt(thatParts[i]) : 0;
-            if(thisPart < thatPart)
-                return -1;
-            if(thisPart > thatPart)
-                return 1;
-        }
-        return 0;
-    }
-
-    @Override
-	public boolean equals(Object that) {
-        if(this == that)
-            return true;
-        if(that == null)
-            return false;
-        if(this.getClass() != that.getClass())
-            return false;
-        return this.compareTo((Version) that) == 0;
-    }
-
-	@Override
-	public String toString(){
-		return this.version;
-	}
-}

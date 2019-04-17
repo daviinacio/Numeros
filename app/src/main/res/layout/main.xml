@@ -1,13 +1,15 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_height="match_parent"
 	android:layout_width="match_parent"
 	android:id="@+id/main_lay"
-	tools:context=".MainActivity">
+	tools:context=".MainActivity"
+	android:orientation="vertical">
 	
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
+		android:layout_weight="1"
 		android:gravity="center_horizontal"
 		android:id="@+id/main_sublay"
 		android:padding="20dp"
@@ -206,13 +208,12 @@
 	<!--com.google.android.gms.ads.AdView
 		xmlns:ads="http://schemas.android.com/apk/res-auto"
 		android:id="@+id/adView"
-		android:background="#ffdd00"
-		android:layout_width="wrap_content"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_centerHorizontal="true"
 		android:layout_alignParentBottom="true"
-		ads:adSize="BANNER"
+		ads:adSize="SMART_BANNER"
 		ads:adUnitId="ca-app-pub-1507172442893539/5464430854">
 	</com.google.android.gms.ads.AdView-->
 	
-</RelativeLayout>
+</LinearLayout>

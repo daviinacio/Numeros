@@ -17,36 +17,13 @@ import org.json.*;
 import java.net.*;
 import android.net.*;
 import android.preference.*;
-import com.google.android.gms.ads.*;
+//import com.google.android.gms.ads.*;
 import com.daviapps.numeros.domain.*;
-import com.daviapps.numeros.internet.*;
 import com.daviapps.numeros.dialog.*;
 import com.daviapps.numeros.old.*;
+import com.daviapps.numeros.update.*;
 
 public class MainActivity extends Activity {
-	/*
-		version 1.5.1 :: done
-		 - Update checker
-		 
-		version 1.5.2 :: done
-		 - Update downloader
-		 
-		version 1.5.3 :: done
-		 - File path changed
-	
-		version 1.5.4 :: done
-		 - Replace JSONPreferences to SharedPreferences
-		 - Remove JSONOreferences
-		 
-		version 1.5.5
-		 - Replace DDBTableFile to SQLite
-		 - Remove DDBTableFile references
-		
-		version 1.5.6
-		 - Make DAppsBackup
-		
-	*/
-	
 	// Defines
 	private static final int A_ACERTOU = 1000, A_ERROU = 1001, A_NAO_CONSEGUE = 1002, A_PERDEU = 1003;
 	private static final int S_RUNNING = 1010, S_PAUSED = 1011, S_STOPED = 1012;
@@ -59,9 +36,6 @@ public class MainActivity extends Activity {
 	
 	private static final int CHAR_INIT = 65;
 	
-	// Statics
-	//public static String download_links = "http://localhost:12345/download_list.json";
-	//public static String download_links = "http://daviapps.6te.net/json/download_list.json";
 
 	// Preferences Map
 	public static String PREFS_AUDIO = "audio";
@@ -80,7 +54,7 @@ public class MainActivity extends Activity {
 	private LinearLayout[] lay_cor;
 	private TextView score;
 	private ProgressBar time;
-	private RelativeLayout main_lay;
+	//private RelativeLayout main_lay;
 	private TextView decrement_text;
 
 	// Variables
@@ -113,9 +87,6 @@ public class MainActivity extends Activity {
 	private static boolean run = false;
 
 	// Config
-	//public static DCodePreferences _old_prefs;
-	//public static DCodePreferences3 preferences;
-	//public static Preferences <String, String> json_prefs;
 	private SharedPreferences prefs;
 	
 	// Database
@@ -124,10 +95,6 @@ public class MainActivity extends Activity {
 	// Timer
 	private int tm = 250;
 	private Timer t;
-
-	// Settings
-	//private boolean audio = false;
-	//private boolean order = false;
 
 	//Menu item
 	private MenuItem audioMenu;
@@ -185,44 +152,37 @@ public class MainActivity extends Activity {
 		TextView version = (TextView) findViewById(R.id.main_version);
 		version.setText("versão: " + version.getText());
 
-		main_lay = (RelativeLayout) findViewById(R.id.main_lay);
-
-		//debug
-		//ErrorDialog.show(this, "Package", getExternalFilesDir("update.apk").getPath());
-
-		// Config
+		
+		/*	*	*	*	Preferences 	*	Preferences 	*	*	*	*/
+		
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+		/*	*	*	*	  AdMob    *   Admob   *  Admob 	*	*	*	*/
+		
+		/*MobileAds.initialize(this, "ca-app-pub-1507172442893539~2844160460");
+		
+		AdView adView = findViewById(R.id.adView);
+		
+		adView.setAdListener(new AdListener(){
+				@Override
+				public void onAdLoaded(){
+					Toast.makeText(MainActivity.this, "Admob: loaded", Toast.LENGTH_SHORT).show();
+					//ErrorDialog.show(MainActivity.this, "Admob", "Working");
+				}
 
-		// AdMob
-		MobileAds.initialize(this, "ca-app-pub-1507172442893539~2844160460");
+				@Override
+				public void onAdFailedToLoad(int p1){
+					Toast.makeText(MainActivity.this, "AdMob: Fail to load (" + p1 + ")", Toast.LENGTH_SHORT).show();
+				}
+			});
+				
+		AdRequest adRequest = new AdRequest.Builder()
+			.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+			.addTestDevice("A4DDF5EC5E81FE0D117CA05BA164E8B8")
+			.build();
 
-		try {
-			AdView adView = new AdView(this);
-			adView.setAdSize(AdSize.BANNER);
-			adView.setAdUnitId("ca-app-pub-1507172442893539/5464430854");
-
-			AdRequest.Builder adRequest = new AdRequest.Builder();
-
-			adView.setAdListener(new AdListener(){
-					@Override
-					public void onAdLoaded(){
-						Toast.makeText(MainActivity.this, "Admob: loaded", Toast.LENGTH_SHORT).show();
-					}
-
-					@Override
-					public void onAdFailedToLoad(int p1){
-						Toast.makeText(MainActivity.this, "AdMob: Fail to load (" + p1 + ")", Toast.LENGTH_SHORT).show();
-					}
-				});
-
-			adView.loadAd(adRequest.build());
-
-
-		}
-		catch(Exception ex){
-			ErrorDialog.show(this, "AdMob - " + ex.getClass().getName(), ex.getMessage());
-		}
+	
+			adView.loadAd(adRequest);*/
 
 		// Timer
 		try {
@@ -256,6 +216,11 @@ public class MainActivity extends Activity {
 		} catch(Exception ex){
 			ErrorDialog.show(this, "Refresh", ex.getMessage());
 		}
+		
+		/*((Context)((Activity) this)).runOnUiThread(new Runnable(){
+			@Override
+			public void run(){}
+		});*/
     }
 
 	// Number functions
@@ -263,7 +228,6 @@ public class MainActivity extends Activity {
 		for(int i = 0; i < array.length; i++)
 			if(array[i] == num)
 				return true;
-
 		return false;
 	}
 
@@ -658,8 +622,3 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 }
-
-
-
-
-

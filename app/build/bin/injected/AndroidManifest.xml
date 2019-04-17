@@ -6,7 +6,7 @@
 	android:versionName="@string/app_version">
 
 	<uses-sdk
-		android:minSdkVersion="14"
+		android:minSdkVersion="10"
 		android:targetSdkVersion="21"/>
 
 	<uses-permission

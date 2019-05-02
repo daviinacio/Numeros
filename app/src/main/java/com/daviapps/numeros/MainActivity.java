@@ -22,10 +22,13 @@ import com.daviapps.numeros.domain.*;
 import com.daviapps.numeros.dialog.*;
 import com.daviapps.numeros.update.*;
 import com.daviapps.numeros.database.*;
+import com.daviapps.numeros.respack.*;
+import android.content.res.*;
+import android.util.*;
 
 public class MainActivity extends Activity implements EnviromentGame.EventListener {
 	// Defines
-	private static final int A_ACERTOU = 1000, A_ERROU = 1001, A_NAO_CONSEGUE = 1002, A_PERDEU = 1003;
+	//private static final int A_HIT = 1000, A_ERROU = 1001, A_, A_PERDEU = 1003;
 	
 	private static final int BTNS_LENGTH = 4;
 	
@@ -79,6 +82,10 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 	//Menu item
 	private MenuItem audioMenu;
 	private MenuItem orderMenu;
+	
+	// Resources
+	private File externalAssetsPath;
+	private SoundFXResourcePack soundfx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -95,6 +102,17 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+		
+		/*	*	*	*	  Resource  	*	 Resource 	   *	*	*	*/
+		this.externalAssetsPath = getExternalFilesDir("assets");
+		this.externalAssetsPath.mkdir();
+		
+		new CopyAssets(getAssets(), externalAssetsPath).copy();
+		
+
+		this.soundfx = new SoundFXResourcePack(externalAssetsPath, "default-soundfx.zip");
+		
+		
 		/*	*	*	*	  AdMob    *   Admob   *  Admob 	*	*	*	*/
 
 		/*MobileAds.initialize(this, "ca-app-pub-1507172442893539~2844160460");
@@ -171,6 +189,9 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 		// Game
 		
 		try {
+			if(gameDB.count() == 0)
+				gameDB.insert(new Game());
+			
 			this.enviroment = new EnviromentGame(this);
 			enviroment.setEventListener(this);
 			enviroment.setLevel(levels[0]);
@@ -194,6 +215,7 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 			this.game.setup(this);*/
 			
 		} catch(Exception ex){
+			
 			ErrorDialog.show(this, "MainActivity.onCreate - Create game enviroment", ex.getMessage());
 		}
 		
@@ -472,7 +494,7 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 			
 		enviroment.setup(new Game());
 		
-		som(A_PERDEU);
+		this.soundfx.find("lose").start();
 		refresh();
 	}
 
@@ -480,7 +502,7 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 	public void onPlayerHit(Game g){
 		//Toast.makeText(this, "onPlayerHit", Toast.LENGTH_SHORT).show();
 		
-		som(A_ACERTOU);
+		//this.soundfx.find("hit").start();
 		refresh();
 	}
 
@@ -488,7 +510,7 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 	public void onPlayerFault(Game g){
 		//Toast.makeText(this, "onPlayerFault", Toast.LENGTH_SHORT).show();
 		
-		som(A_ERROU);
+		this.soundfx.find("fault").start();
 
 		enableButtons(true);
 		buffer = clear(buffer, -1);
@@ -502,17 +524,17 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 	
 	
 	// Audio
-	public void som(int audioId){
+	/*public void som(int audioId){
 		if(prefs.getBoolean(PREFS_AUDIO, false))
 			if(audioId == A_ACERTOU)
 				;
 			else if(audioId == A_ERROU)
-				MediaPlayer.create(this, R.raw.errou).start();
+				//MediaPlayer.create(this, R.raw.errou).start();
 			else if(audioId == A_NAO_CONSEGUE)
-				MediaPlayer.create(this, R.raw.nao_).start();
+				//MediaPlayer.create(this, R.raw.nao_).start();
 			else if(audioId == A_PERDEU)
-				MediaPlayer.create(this, R.raw.nao).start();
-	}
+				//MediaPlayer.create(this, R.raw.nao).start();
+	}*/
 
 	// Menu item
 	public void confAudio(boolean active){
@@ -624,4 +646,5 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 
         return super.onOptionsItemSelected(item);
     }
+	
 }

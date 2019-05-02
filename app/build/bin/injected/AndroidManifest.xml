@@ -5,6 +5,10 @@
 	android:versionCode="1"
 	android:versionName="@string/app_version">
 
+	<option
+		name="ASSETS_FOLDER_RELATIVE_PATH"
+		value="/src/main/assets"/>
+
 	<uses-sdk
 		android:minSdkVersion="10"
 		android:targetSdkVersion="21"/>

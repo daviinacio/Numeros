@@ -3,30 +3,19 @@ package com.daviapps.numeros;
 import android.app.*;
 import android.os.*;
 import android.widget.*;
-import android.view.View.*;
 import android.view.*;
 import java.util.*;
-import android.media.*;
 import android.content.*;
-import android.widget.AdapterView.*;
-import android.graphics.*;
-import com.daviapps.dcode.preferences.*;
-import com.daviapps.dcode.*;
 import java.io.*;
-import org.json.*;
-import java.net.*;
-import android.net.*;
 import android.preference.*;
-//import com.google.android.gms.ads.*;
+import com.google.android.gms.ads.*;
 import com.daviapps.numeros.domain.*;
 import com.daviapps.numeros.dialog.*;
 import com.daviapps.numeros.update.*;
 import com.daviapps.numeros.database.*;
 import com.daviapps.numeros.respack.*;
-import android.content.res.*;
-import android.util.*;
 
-public class MainActivity extends Activity implements EnviromentGame.EventListener {
+public class MainActivity extends Activity implements EnvironmentGame.EventListener {
 	// Defines
 	//private static final int A_HIT = 1000, A_ERROU = 1001, A_, A_PERDEU = 1003;
 	
@@ -54,7 +43,7 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 	
 	private int [] buffer;
 	
-	private EnviromentGame enviroment;
+	private EnvironmentGame enviroment;
 	
 	private boolean update_asked = false;
 	
@@ -81,7 +70,8 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 	
 	//Menu item
 	private MenuItem audioMenu;
-	private MenuItem orderMenu;
+	private MenuItem statusMenu;
+	//private MenuItem orderMenu;
 	
 	// Resources
 	private File externalAssetsPath;
@@ -115,7 +105,7 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 		
 		/*	*	*	*	  AdMob    *   Admob   *  Admob 	*	*	*	*/
 
-		/*MobileAds.initialize(this, "ca-app-pub-1507172442893539~2844160460");
+		MobileAds.initialize(this, "ca-app-pub-1507172442893539~2844160460");
 
 		 AdView adView = findViewById(R.id.adView);
 
@@ -138,7 +128,7 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 		 .build();
 
 
-		 adView.loadAd(adRequest);*/
+		 adView.loadAd(adRequest);
 		
 		// Variables
 		btns_num = new int[BTNS_LENGTH];
@@ -178,8 +168,8 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 		score = (TextView) findViewById(R.id.pontos);
 		time = (ProgressBar) findViewById(R.id.Progresso);
 
-		time.setMax(EnviromentGame.TIME_MAX);
-		time.setProgress(EnviromentGame.TIME_MED);
+		time.setMax(EnvironmentGame.TIME_MAX);
+		time.setProgress(EnvironmentGame.TIME_MED);
 
 		decrement_text = (TextView) findViewById(R.id.main_decrement);
 
@@ -192,16 +182,20 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 			if(gameDB.count() == 0)
 				gameDB.insert(new Game());
 			
-			this.enviroment = new EnviromentGame(this);
+			this.enviroment = new EnvironmentGame(this);
 			enviroment.setEventListener(this);
 			enviroment.setLevel(levels[0]);
 			
-			Game g = gameDB.selectById(1);
+			//Game g = null;
+			
+			this.selectGame();
+			
+			//Game g = gameDB.selectById(1);
 			//Game g = new Game();
-			enviroment.setup(g);
+			//enviroment.setup(g);
 			
 			
-			Toast.makeText(this, Integer.toString(gameDB.count()), Toast.LENGTH_SHORT).show();
+			//Toast.makeText(this, Integer.toString(gameDB.count()), Toast.LENGTH_SHORT).show();
 			
 			//this.game = new Game();
 			//this.game = gameDB.select("1 = 1").get(0);
@@ -231,6 +225,25 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 			public void run(){}
 		});*/
     }
+	
+	private void selectGame(){
+		new GameListDialog.Builder(this)
+			.setOnSelectListener(new GameListDialog.OnSelectListener(){
+				@Override
+				public void onSelect(Game game){
+					Toast.makeText(MainActivity.this, game.toString(), Toast.LENGTH_SHORT).show();
+					MainActivity.this.enviroment.setup(game);
+				}
+			})
+			.setOnCancelListener(new DialogInterface.OnCancelListener(){
+				@Override
+				public void onCancel(DialogInterface di){
+					MainActivity.this.finish();
+				}
+			})
+			.build()
+			.show();
+	}
 
 	// Number functions
 	public boolean verify(int array[], int num){
@@ -292,7 +305,7 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 		Button button = (Button) v;
 		button.setEnabled(false);
 		
-		boolean order = this.prefs.getBoolean(PREFS_ORDER, false);
+		//boolean order = this.prefs.getBoolean(PREFS_ORDER, false);
 		
 		int num = 0;
 		
@@ -302,12 +315,28 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 		
 		incrementBuffer(num);
 		
-		int a = buffer[0];//, b = buffer[1], c = buffer[2], d = buffer[3];
+		int a = buffer[0], b = buffer[1], c = buffer[2], d = buffer[3];
 		
 		int [] sorted = btns_num;
 		java.util.Arrays.sort(sorted);
 		
 		if(buffer[3] != -1){
+			enviroment.hit(); enviroment.start();
+		} else
+		if(buffer[2] != -1){
+			if(a != sorted[2] && a != sorted[1])
+				enviroment.fault();
+		} else
+		if(buffer[1] != -1){
+			if(a != sorted[1] && a != sorted[2])
+				enviroment.fault();
+		} else
+		if(buffer[0] != -1){
+			if(a != sorted[0] && a != sorted[3])
+				enviroment.fault();
+		}
+		
+		/*if(buffer[3] != -1){
 			enviroment.hit(); enviroment.start(); //acertou(); start();
 		} else
 		if(buffer[2] != -1){
@@ -321,7 +350,7 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 		if(buffer[0] != -1){
 			if(a != sorted[order ? 0 : 3])
 				enviroment.fault(); // errou();
-		}
+		}*/
 	}
 	
 	/*public void updateVisual(){
@@ -458,11 +487,13 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 
 	@Override
 	public void onGameSetup(Game g){
-		Toast.makeText(this, "onGameSetup", Toast.LENGTH_SHORT).show();
+		//Toast.makeText(this, "onGameSetup", Toast.LENGTH_SHORT).show();
 		
 		refresh();
 		
 		// TODO: Implement this method
+		
+		//enviroment.pause();
 	}
 
 	@Override
@@ -470,32 +501,45 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 		//Toast.makeText(this, "onGameStart", Toast.LENGTH_SHORT).show();
 		
 		
-		// TODO: Implement this method
+		statusMenu.setIcon(getResources().getDrawable(R.drawable.baseline_pause_white_48dp));
+		statusMenu.setEnabled(true);
+		
+		refresh();
 	}
 
 	@Override
 	public void onGamePause(Game g){
-		Toast.makeText(this, "onGamePause\n" + g, Toast.LENGTH_LONG).show();
+		//Toast.makeText(this, "onGamePause\n" + g, Toast.LENGTH_LONG).show();
 		
-		if(g.getId() == 0)
+		if(gameDB.count("id = " + g.getId()) == 0)
 			gameDB.insert(g);
 		else
 			gameDB.update(g);
+			
+		statusMenu.setIcon(getResources().getDrawable(R.drawable.baseline_play_arrow_white_48dp));
+		statusMenu.setEnabled(true);
+		
+		enableButtons(false);
 	}
 
 	@Override
 	public void onGameStop(Game g){
 		Toast.makeText(this, "onGameStop\n" + g, Toast.LENGTH_LONG).show();
 		
-		if(g.getId() == 0)
+		if(gameDB.count("id = " + g.getId()) == 0)
 			gameDB.insert(g);
 		else
 			gameDB.update(g);
 			
-		enviroment.setup(new Game());
+		//enviroment.setup(new Game());
 		
 		this.soundfx.find("lose").start();
 		refresh();
+		
+		statusMenu.setIcon(getResources().getDrawable(R.drawable.baseline_stop_white_48dp));
+		statusMenu.setEnabled(false);
+		
+		enableButtons(false);
 	}
 
 	@Override
@@ -519,7 +563,7 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 	@Override
 	public void onVisualUpdate(Game g){
 		score.setText("Pontos: " + g.getScore());
-		time.setProgress(g.getTime() >= EnviromentGame.TIME_MIN ? g.getTime() : EnviromentGame.TIME_MIN);
+		time.setProgress(g.getTime() >= EnvironmentGame.TIME_MIN ? g.getTime() : EnvironmentGame.TIME_MIN);
 	}
 	
 	
@@ -549,14 +593,19 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 		}
 		
 		
-		if(!active)
-			audioMenu.setIcon(getResources().getDrawable(R.drawable.audio_off));
-		else
+		if(active){
 			audioMenu.setIcon(getResources().getDrawable(R.drawable.audio_on));
+			audioMenu.setTitle("Audio ativo");
+		}
+		else {
+			audioMenu.setIcon(getResources().getDrawable(R.drawable.audio_off));
+			audioMenu.setTitle("Audio desativado");
+		}
+			
 			
 	}
 
-	public void confOrder(boolean order){
+	/*public void confOrder(boolean order){
 		try{
 			SharedPreferences.Editor edit = this.prefs.edit();
 			edit.putBoolean(PREFS_ORDER, order);
@@ -571,16 +620,19 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 			orderMenu.setIcon(getResources().getDrawable(R.drawable.up_2));
 		else
 			orderMenu.setIcon(getResources().getDrawable(R.drawable.down_4));
-	}
+	}*/
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu){
 		try {
-			audioMenu = menu.findItem(R.id.menu_som_power);
-			orderMenu = menu.findItem(R.id.menu_mode);
+			audioMenu = menu.findItem(R.id.menu_sound);
+			statusMenu = menu.findItem(R.id.menu_status);
+			//orderMenu = menu.findItem(R.id.menu_mode);
 			
 			confAudio(this.prefs.getBoolean(PREFS_AUDIO, false));
-			confOrder(this.prefs.getBoolean(PREFS_ORDER, true));
+			//confOrder(this.prefs.getBoolean(PREFS_ORDER, true));
+			
+			
 			
 		} catch(Exception ex){
 			ErrorDialog.show(this, "onPrepareOptionsMenu", ex.getMessage());
@@ -598,39 +650,59 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        
+		switch(item.getItemId()){
+			case R.id.menu_sound:
+				confAudio(!this.prefs.getBoolean(PREFS_AUDIO, false));
+				return true;
+				
+			case R.id.menu_status:
+				if(enviroment.getStatus() == EnvironmentGame.RUNNING)
+					enviroment.pause();
+				else
+				if(enviroment.getStatus() == EnvironmentGame.PAUSED)
+					enviroment.start();
+				return true;
+				
+			case R.id.menu_about:
+				new GameListDialog(this).show();
+				return true;
+		}
+		
 
-        if (id == R.id.menu_info) {	
+
+        /*if (id == R.id.menu_info) {	
 			//gameDB.insert(this.game);
 			//Toast.makeText(this, "Game state saved", Toast.LENGTH_SHORT).show();
 			//Toast.makeText(this, "Database length (" + gameDB.count() + ")", Toast.LENGTH_SHORT).show();
 		}
 		else 
 		if (id == R.id.menu_info_pontos){
-			Toast.makeText(this, "Função em desenvolvimento", Toast.LENGTH_SHORT).show();
-			/*run = false;
-			new ScoreDialog(MainActivity.this){
-				@Override
-				public void onStop(){
-					run = true;
-				}
-			}.show();*/
+			new GameListDialog(this).show();
+			
+			//Toast.makeText(this, "Função em desenvolvimento", Toast.LENGTH_SHORT).show();
+			
 		}
 		else
 		if (id == R.id.menu_info_settings){
-			Toast.makeText(this, "Função em desenvolvimento", Toast.LENGTH_SHORT).show();
+			new GameListDialog.Builder(this)
+					.setOnSelectListener(new GameListDialog.OnSelectListener(){
+						@Override
+						public void onSelect(Game game){
+							Toast.makeText(MainActivity.this, game.toString(), Toast.LENGTH_SHORT).show();
+						}
+					})
+					.build()
+					.show();
+			
+			//Toast.makeText(this, "Função em desenvolvimento", Toast.LENGTH_SHORT).show();
 		}
 		else
 		if (id == R.id.menu_info_players){
-			new PlayerEditorDialog(this).show();
-			Toast.makeText(this, "Função em desenvolvimento", Toast.LENGTH_SHORT).show();
-			/*run = false;
-			new PlayerDialog(MainActivity.this){
-				@Override
-				public void onStop(){
-					run = true;
-				}
-			}.show();*/
+			//new PlayerEditorDialog(this).show();
+			new PlayerListDialog(this).show();
+			//Toast.makeText(this, "Função em desenvolvimento", Toast.LENGTH_SHORT).show();
+			
 		}
 		else
 		if (id == R.id.menu_som_power) {
@@ -642,7 +714,7 @@ public class MainActivity extends Activity implements EnviromentGame.EventListen
 			confOrder(!this.prefs.getBoolean(PREFS_ORDER, false));
 			refresh();
             return true;
-		}
+		}*/
 
         return super.onOptionsItemSelected(item);
     }

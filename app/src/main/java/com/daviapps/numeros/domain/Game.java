@@ -11,18 +11,23 @@ public class Game {
 	private int hits = 0, faults = 0, score = 0;
 
 	// Time
-	private int time = EnviromentGame.TIME_MED, incr = 1, decr = 1;
+	private int time = EnvironmentGame.TIME_MED, incr = 1, decr = 1;
 
 	// Date
 	private Date dateStart, dateLast;
 	
 	// Status
-	private int status = EnviromentGame.STOPPED;
+	private int status = EnvironmentGame.STOPPED;
 	private int level;
 	
 	public Game(){
 		this.dateStart = new Date();
 		this.dateLast = new Date();
+	}
+	
+	public Game(int player){
+		this();
+		this.player = player;
 	}
 
 	public int getId(){ return id; }

@@ -2,6 +2,7 @@ package com.daviapps.numeros.respack;
 import java.io.*;
 import android.util.*;
 import android.content.res.*;
+import com.daviapps.numeros.utils.*;
 
 public class CopyAssets {
 	AssetManager assetManager;
@@ -14,6 +15,9 @@ public class CopyAssets {
 	
 	
 	public void copy(){
+		// TODO: Refactore this method
+		
+		
 		String[] files = null;
 		try {
 			files = assetManager.list("");
@@ -27,11 +31,8 @@ public class CopyAssets {
 				in = assetManager.open(filename);
 				File outFile = new File(externalPath, filename);
 				out = new FileOutputStream(outFile);
-				byte[] buffer = new byte[1024];
-				int read;
-				while((read = in.read(buffer)) != -1){
-					out.write(buffer, 0, read);
-				}
+				
+				IOUtils.copy(in, out);
 
 			} catch(IOException e) {
 				Log.e("tag", "Failed to copy asset file: " + filename, e);

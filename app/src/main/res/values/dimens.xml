@@ -9,4 +9,10 @@
 	<dimen name="Nome">20dp</dimen>
 	<dimen name="Pontos">15dp</dimen>
 	<dimen name="Tempo">5dp</dimen>
+	
+	<dimen name="AdapterPlayerHeight">50dp</dimen>
+	<dimen name="AdapterPlayerTextSize">22dp</dimen>
+	
+	<dimen name="AdapterGameHeight">50dp</dimen>
+	<dimen name="AdapterGameTextSize">18dp</dimen>
 </resources>

@@ -6,6 +6,17 @@
 		<item name="android:logo">@android:color/transparent</item>
 	</style>
 	
+	<!-- Widget style -->
+		
+	<style name="AppTheme.Dialog.Button" parent="">
+		<item name="android:background">#00707070</item>
+		<item name="android:textColor">@color/colorAccent</item>
+	</style>
+	
+	<style name="AppTheme.Dialog.Button.Success" parent="@style/AppTheme.Dialog.Button">
+		<item name="android:textColor">@color/Verde</item>
+	</style>
+	
 	<!--
 	<item name="android:actionDropDownStyle">@style/myapp_DropDownNav</item>        
     <item name="android:actionBarWidgetTheme">@style/myapp.actionBarWidgetTheme</item>

@@ -205,7 +205,7 @@
 		
 	</LinearLayout>
 	
-	<!--com.google.android.gms.ads.AdView
+	<com.google.android.gms.ads.AdView
 		xmlns:ads="http://schemas.android.com/apk/res-auto"
 		android:id="@+id/adView"
 		android:layout_width="match_parent"
@@ -214,6 +214,6 @@
 		android:layout_alignParentBottom="true"
 		ads:adSize="SMART_BANNER"
 		ads:adUnitId="ca-app-pub-1507172442893539/5464430854">
-	</com.google.android.gms.ads.AdView-->
+	</com.google.android.gms.ads.AdView>
 	
 </LinearLayout>

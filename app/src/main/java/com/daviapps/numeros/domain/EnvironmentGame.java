@@ -4,7 +4,7 @@ import android.app.*;
 import android.content.*;
 import com.daviapps.numeros.database.*;
 
-public class EnviromentGame {
+public class EnvironmentGame {
 	// id, player, status, level, hits, faults, score, time, incr, decr 
 	
 	// Statics
@@ -29,7 +29,7 @@ public class EnviromentGame {
 	private Timer timer;
 
 	// Constructors
-	public EnviromentGame(final Activity activity){
+	public EnvironmentGame(final Activity activity){
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {         
 			@Override
@@ -38,22 +38,22 @@ public class EnviromentGame {
 					@Override
 					public void run(){
 						if(run){
-							if(EnviromentGame.this.game == null)
+							if(EnvironmentGame.this.game == null)
 								return;
 							
-							if(EnviromentGame.this.game.getStatus() == EnviromentGame.RUNNING){
-								if(EnviromentGame.this.game.getTime() > EnviromentGame.TIME_MIN){
+							if(EnvironmentGame.this.game.getStatus() == EnvironmentGame.RUNNING){
+								if(EnvironmentGame.this.game.getTime() > EnvironmentGame.TIME_MIN){
 									game.setTime(game.getTime() - ((game.getDecrement() > 1 ? game.getDecrement() : 1) * level.velocity));
-									if(EnviromentGame.this.game.getTime() <= EnviromentGame.TIME_MIN)
-										EnviromentGame.this.stop();
+									if(EnvironmentGame.this.game.getTime() <= EnvironmentGame.TIME_MIN)
+										EnvironmentGame.this.stop();
 									
 									/*time -= (decr > 1 ? decr : 1) * level.velocity;
 									if(time <= EnviromentGame.TIME_MIN)
 										lose();*/
 								}
 							}
-							if(EnviromentGame.this.eventListener != null)
-								EnviromentGame.this.eventListener.onVisualUpdate(EnviromentGame.this.game);
+							if(EnvironmentGame.this.eventListener != null && EnvironmentGame.this.game != null)
+								EnvironmentGame.this.eventListener.onVisualUpdate(EnvironmentGame.this.game);
 						}
 					}
 				});
@@ -77,6 +77,8 @@ public class EnviromentGame {
 	
 	public void setup(Game game){
 		this.game = game;
+		
+		//this.start();
 			
 		if(this.eventListener != null)
 			this.eventListener.onGameSetup(this.game);
@@ -90,7 +92,7 @@ public class EnviromentGame {
 			return;
 		
 		this.wakeUp();
-		this.game.setStatus(EnviromentGame.RUNNING);
+		this.game.setStatus(EnvironmentGame.RUNNING);
 		
 		if(this.eventListener != null)
 			this.eventListener.onGameStart(this.game);
@@ -100,7 +102,7 @@ public class EnviromentGame {
 		if(this.game == null)
 			return;
 		
-		this.game.setStatus(EnviromentGame.PAUSED);
+		this.game.setStatus(EnvironmentGame.PAUSED);
 		
 		if(this.eventListener != null)
 			this.eventListener.onGamePause(this.game);
@@ -110,7 +112,7 @@ public class EnviromentGame {
 		if(this.game == null)
 			return;
 		
-		this.game.setStatus(EnviromentGame.STOPPED);
+		this.game.setStatus(EnvironmentGame.STOPPED);
 		
 		/*hits = faults = score = 0;
 		time = TIME_MED;
@@ -118,6 +120,8 @@ public class EnviromentGame {
 		
 		if(this.eventListener != null)
 			this.eventListener.onGameStop(this.game);
+			
+		this.game = null;
 	}
 	
 	// Player Methods
@@ -136,7 +140,7 @@ public class EnviromentGame {
 			if(this.game.getTime() < TIME_MAX + this.game.getDecrement())
 				this.game.setTime(this.game.getTime() + 1);
 				
-		if(this.game.getStatus() == EnviromentGame.PAUSED)
+		if(this.game.getStatus() == EnvironmentGame.PAUSED)
 			this.start();
 
 		if(this.eventListener != null)
@@ -153,7 +157,7 @@ public class EnviromentGame {
 			this.game.setDecrement(this.game.getDecrement() + 1);
 		//}
 		//else
-		if(this.game.getStatus() == EnviromentGame.PAUSED)
+		if(this.game.getStatus() == EnvironmentGame.PAUSED)
 			this.start();
 
 		if(this.eventListener != null)
@@ -174,6 +178,10 @@ public class EnviromentGame {
 
 	public Player getPlayer(){
 		return this.player;
+	}
+	
+	public int getStatus(){
+		return this.game.getStatus();
 	}
 	
 	/*public Game getGame(){

@@ -51,5 +51,9 @@ public class Player {
 	public int getMaxScore(){
 		return maxScore;
 	}
-	
+
+	@Override
+	public String toString(){
+		return String.format("Player(%s):\nid:\t%s\nnickname:\t%s\npassword:\t%s\nmaxScore:\t%s", super.toString(), this.id, this.nickname, this.passwd, this.maxScore);
+	}
 }

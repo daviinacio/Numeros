@@ -69,9 +69,7 @@ public class GameListDialog extends Dialog implements OnClickListener, OnItemCli
 			case R.id.dialog_list_player_add:
 				Player p = new PlayerDB(getContext()).select("nickname = \"anonymous\"").get(0);
 				
-				Game g = new Game(p.getId());
-				
-				adapter.addItem(g);
+				Game g = adapter.addItem(new Game(p.getId()));
 				
 				if(onSelectListener != null){
 					this.onSelectListener.onSelect(g);

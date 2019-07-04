@@ -22,7 +22,7 @@ public class PlayerDB extends DataSet<Player> {
 	}
 
 	@Override
-	public void insert(Player item){
+	public Player insert(Player item){
 		SQLiteDatabase db = core.getWritableDatabase();
 
 		try {
@@ -34,6 +34,10 @@ public class PlayerDB extends DataSet<Player> {
 			
             db.insert(Core.DB_NAME, null, values);
 
+			// Return inserted item with id
+			List<Player> s = select("1 = 1");
+
+			return s.get(s.size() -1);
         } 
 		catch(Exception ex) {
             ErrorDialog.show(core.context, String.format("DB(%s): Insert object", Core.DB_NAME), ex.getMessage());
@@ -41,6 +45,8 @@ public class PlayerDB extends DataSet<Player> {
 		finally {
 			db.close();
 		}
+		
+		return item;
 	}
 
 	@Override

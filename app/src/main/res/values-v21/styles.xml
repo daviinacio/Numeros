@@ -7,7 +7,7 @@
 		<item name="android:colorAccent">@color/colorAccent</item>
 		<item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Example</item>
-		<item name="android:popupBackground">@color/Amarelo</item>
+		<!--item name="android:popupBackground">@color/Amarelo</item-->
 		
 		<item name="android:itemBackground">@color/colorPrimary</item>
 	</style>

@@ -63,10 +63,11 @@ public class GameAdapter extends BaseAdapter implements GenericBaseAdapter<Game>
 	}
 
 	@Override
-	public void addItem(Game e){
-		this.db.insert(e);
+	public Game addItem(Game e){
+		e = this.db.insert(e);
 		this.items.add(e);
 		this.notifyDataSetChanged();
+		return e;
 	}
 
 	@Override

@@ -233,12 +233,12 @@ containing a value of this type.
     }
     public static final class id {
         public static final int Progresso=0x7f0a0016;
-        public static final int action0=0x7f0a0048;
-        public static final int action_container=0x7f0a0045;
-        public static final int action_divider=0x7f0a004c;
-        public static final int action_image=0x7f0a0046;
-        public static final int action_text=0x7f0a0047;
-        public static final int actions=0x7f0a0056;
+        public static final int action0=0x7f0a004e;
+        public static final int action_container=0x7f0a004b;
+        public static final int action_divider=0x7f0a0052;
+        public static final int action_image=0x7f0a004c;
+        public static final int action_text=0x7f0a004d;
+        public static final int actions=0x7f0a005c;
         public static final int adView=0x7f0a0019;
         public static final int adapter_game_average=0x7f0a001b;
         public static final int adapter_game_date=0x7f0a001d;
@@ -248,20 +248,26 @@ containing a value of this type.
         public static final int adapter_player_nickname=0x7f0a001e;
         public static final int async=0x7f0a0005;
         public static final int blocking=0x7f0a0006;
-        public static final int cancel_action=0x7f0a0049;
-        public static final int chronometer=0x7f0a0051;
+        public static final int cancel_action=0x7f0a004f;
+        public static final int chronometer=0x7f0a0057;
         public static final int dialog_edit_player_btn_save=0x7f0a0028;
         public static final int dialog_edit_player_edit_name=0x7f0a0027;
+        public static final int dialog_editor_cancel=0x7f0a0047;
+        public static final int dialog_editor_delete=0x7f0a0046;
         public static final int dialog_editor_player_edit_nickname=0x7f0a0041;
-        public static final int dialog_editor_player_edit_passwd=0x7f0a0042;
-        public static final int dialog_list_player_add=0x7f0a0044;
-        public static final int dialog_list_player_list=0x7f0a0043;
+        public static final int dialog_editor_player_edit_passwd1=0x7f0a0043;
+        public static final int dialog_editor_player_edit_passwd2=0x7f0a0045;
+        public static final int dialog_editor_player_label_passwd1=0x7f0a0042;
+        public static final int dialog_editor_player_label_passwd2=0x7f0a0044;
+        public static final int dialog_editor_save=0x7f0a0048;
+        public static final int dialog_list_player_add=0x7f0a004a;
+        public static final int dialog_list_player_list=0x7f0a0049;
         public static final int dois=0x7f0a0011;
-        public static final int end_padder=0x7f0a0058;
+        public static final int end_padder=0x7f0a005e;
         public static final int forever=0x7f0a0007;
-        public static final int icon=0x7f0a0053;
-        public static final int icon_group=0x7f0a0057;
-        public static final int info=0x7f0a0052;
+        public static final int icon=0x7f0a0059;
+        public static final int icon_group=0x7f0a005d;
+        public static final int info=0x7f0a0058;
         public static final int italic=0x7f0a0008;
         public static final int lay_dois=0x7f0a0010;
         public static final int lay_quatro=0x7f0a0014;
@@ -274,17 +280,16 @@ containing a value of this type.
         public static final int main_lay=0x7f0a000a;
         public static final int main_sublay=0x7f0a000b;
         public static final int main_version=0x7f0a0018;
-        public static final int media_actions=0x7f0a004b;
-        public static final int menu_about=0x7f0a005d;
-        public static final int menu_config=0x7f0a005a;
-        public static final int menu_info_players=0x7f0a005c;
-        public static final int menu_info_settings=0x7f0a005e;
-        public static final int menu_sound=0x7f0a005b;
-        public static final int menu_status=0x7f0a0059;
+        public static final int media_actions=0x7f0a0051;
+        public static final int menu_about=0x7f0a0062;
+        public static final int menu_info_settings=0x7f0a0063;
+        public static final int menu_players=0x7f0a0061;
+        public static final int menu_sound=0x7f0a0060;
+        public static final int menu_status=0x7f0a005f;
         public static final int normal=0x7f0a0009;
-        public static final int notification_background=0x7f0a0055;
-        public static final int notification_main_column=0x7f0a004e;
-        public static final int notification_main_column_container=0x7f0a004d;
+        public static final int notification_background=0x7f0a005b;
+        public static final int notification_main_column=0x7f0a0054;
+        public static final int notification_main_column_container=0x7f0a0053;
         public static final int perdeu_acertos=0x7f0a0029;
         public static final int perdeu_acertos_label=0x7f0a002a;
         public static final int perdeu_erros=0x7f0a002d;
@@ -315,15 +320,15 @@ containing a value of this type.
         public static final int pontos_settings=0x7f0a003d;
         public static final int pontos_sobre=0x7f0a003c;
         public static final int quatro=0x7f0a0015;
-        public static final int right_icon=0x7f0a0054;
-        public static final int right_side=0x7f0a004f;
+        public static final int right_icon=0x7f0a005a;
+        public static final int right_side=0x7f0a0055;
         public static final int sobre_contato=0x7f0a0040;
         public static final int sobre_pontos=0x7f0a003f;
         public static final int sobre_relatarErro=0x7f0a003e;
-        public static final int status_bar_latest_event_content=0x7f0a004a;
+        public static final int status_bar_latest_event_content=0x7f0a0050;
         public static final int text=0x7f0a0002;
         public static final int text2=0x7f0a0003;
-        public static final int time=0x7f0a0050;
+        public static final int time=0x7f0a0056;
         public static final int title=0x7f0a0004;
         public static final int tres=0x7f0a0013;
         public static final int um=0x7f0a000f;
@@ -347,21 +352,22 @@ containing a value of this type.
         public static final int dialog_editor_player=0x7f03000a;
         public static final int dialog_list_game=0x7f03000b;
         public static final int dialog_list_player=0x7f03000c;
-        public static final int notification_action=0x7f03000d;
-        public static final int notification_action_tombstone=0x7f03000e;
-        public static final int notification_media_action=0x7f03000f;
-        public static final int notification_media_cancel_action=0x7f030010;
-        public static final int notification_template_big_media=0x7f030011;
-        public static final int notification_template_big_media_custom=0x7f030012;
-        public static final int notification_template_big_media_narrow=0x7f030013;
-        public static final int notification_template_big_media_narrow_custom=0x7f030014;
-        public static final int notification_template_custom_big=0x7f030015;
-        public static final int notification_template_icon_group=0x7f030016;
-        public static final int notification_template_lines_media=0x7f030017;
-        public static final int notification_template_media=0x7f030018;
-        public static final int notification_template_media_custom=0x7f030019;
-        public static final int notification_template_part_chronometer=0x7f03001a;
-        public static final int notification_template_part_time=0x7f03001b;
+        public static final int dialog_lose=0x7f03000d;
+        public static final int notification_action=0x7f03000e;
+        public static final int notification_action_tombstone=0x7f03000f;
+        public static final int notification_media_action=0x7f030010;
+        public static final int notification_media_cancel_action=0x7f030011;
+        public static final int notification_template_big_media=0x7f030012;
+        public static final int notification_template_big_media_custom=0x7f030013;
+        public static final int notification_template_big_media_narrow=0x7f030014;
+        public static final int notification_template_big_media_narrow_custom=0x7f030015;
+        public static final int notification_template_custom_big=0x7f030016;
+        public static final int notification_template_icon_group=0x7f030017;
+        public static final int notification_template_lines_media=0x7f030018;
+        public static final int notification_template_media=0x7f030019;
+        public static final int notification_template_media_custom=0x7f03001a;
+        public static final int notification_template_part_chronometer=0x7f03001b;
+        public static final int notification_template_part_time=0x7f03001c;
     }
     public static final class menu {
         public static final int global=0x7f0b0000;
@@ -370,10 +376,19 @@ containing a value of this type.
     public static final class string {
         public static final int app_name=0x7f070002;
         public static final int app_version=0x7f070003;
+        public static final int cancel=0x7f07000b;
         public static final int common_google_play_services_unknown_issue=0x7f070001;
         public static final int copyright=0x7f070004;
         public static final int debug_update_index=0x7f070006;
+        /**  words 
+         */
+        public static final int delete=0x7f07000a;
+        public static final int message_editordialog_delete_confirm=0x7f070009;
+        public static final int ok=0x7f07000d;
+        public static final int save=0x7f07000c;
         public static final int status_bar_notification_info_overflow=0x7f070000;
+        public static final int title_editordialog_delete_confirm=0x7f070008;
+        public static final int title_player_editor=0x7f070007;
         /**  Web content 
          */
         public static final int update_index=0x7f070005;
@@ -386,14 +401,19 @@ item name="android:backgroundStacked">@drawable/ab_stacked_solid_example</item>
         <item name="android:backgroundSplit">@drawable/ab_background_textured_example</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Example</item
          */
-        public static final int ActionBar=0x7f040010;
-        public static final int ActionButton_CloseMode_Example=0x7f040013;
+        public static final int ActionBar=0x7f040013;
+        public static final int ActionButton_CloseMode_Example=0x7f040016;
         public static final int AppTheme=0x7f04000d;
-        public static final int AppTheme_ActionBar_DropDown=0x7f040012;
+        public static final int AppTheme_ActionBar_DropDown=0x7f040015;
         /**  Widget style 
          */
         public static final int AppTheme_Dialog_Button=0x7f04000e;
-        public static final int AppTheme_Dialog_Button_Success=0x7f04000f;
+        public static final int AppTheme_Dialog_Button_Danger=0x7f040012;
+        public static final int AppTheme_Dialog_Button_Primary=0x7f04000f;
+        /** item name="android:textColor">@color/darkGray</item
+         */
+        public static final int AppTheme_Dialog_Button_Secondary=0x7f040010;
+        public static final int AppTheme_Dialog_Button_Success=0x7f040011;
         /** style name="ActionBar.Transparent.Example" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@drawable/ab_transparent_example</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Example</item>
@@ -403,8 +423,8 @@ style name="ActionBar.Transparent.Example" parent="@android:style/Widget.Holo.Li
 	<item name="android:progressBarStyle">@style/ProgressBar.Example</item>
     </style
          */
-        public static final int AppTheme_Light=0x7f040011;
-        public static final int PopupMenu_Example=0x7f040014;
+        public static final int AppTheme_Light=0x7f040014;
+        public static final int PopupMenu_Example=0x7f040017;
         public static final int TextAppearance_Compat_Notification=0x7f040005;
         public static final int TextAppearance_Compat_Notification_Info=0x7f040006;
         public static final int TextAppearance_Compat_Notification_Info_Media=0x7f040000;

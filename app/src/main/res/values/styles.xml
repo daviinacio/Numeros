@@ -2,13 +2,37 @@
 <resources>
     <style name="AppTheme" parent="@android:style/Theme.Holo">
 		<item name="android:colorAccent">@color/colorAccent</item>
-		<item name="android:itemBackground">@color/Azul</item>
+		<!--item name="android:itemBackground">@color/Azul</item-->
 		<item name="android:logo">@android:color/transparent</item>
 	</style>
 	
 	<!-- Widget style -->
 		
-	<style name="AppTheme.Dialog.Button" parent="">
+	<style name="AppTheme.Dialog.Button" parent="@android:style/Widget.Material.Button.Small">
+        <item name="android:background">?android:selectableItemBackground</item>
+        <item name="android:padding">10dp</item>
+        <!--<item name="android:paddingRight">10dp</item>-->
+        <!--<item name="android:paddingLeft">10dp</item>-->
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.Dialog.Button.Primary" parent="@style/AppTheme.Dialog.Button">
+        <item name="android:textColor">@color/Verde</item>
+    </style>
+
+    <style name="AppTheme.Dialog.Button.Secondary" parent="@style/AppTheme.Dialog.Button">
+        <!--item name="android:textColor">@color/darkGray</item-->
+    </style>
+
+    <style name="AppTheme.Dialog.Button.Success" parent="@style/AppTheme.Dialog.Button">
+        <item name="android:textColor">@color/Verde</item>
+    </style>
+
+    <style name="AppTheme.Dialog.Button.Danger" parent="@style/AppTheme.Dialog.Button">
+        <item name="android:textColor">@color/Vermelho</item>
+    </style>
+		
+	<!--style name="AppTheme.Dialog.Button" parent="">
 		<item name="android:background">#00707070</item>
 		<item name="android:textColor">@color/colorAccent</item>
 	</style>
@@ -16,6 +40,10 @@
 	<style name="AppTheme.Dialog.Button.Success" parent="@style/AppTheme.Dialog.Button">
 		<item name="android:textColor">@color/Verde</item>
 	</style>
+	
+	<style name="AppTheme.Dialog.Button.Danger" parent="@style/AppTheme.Dialog.Button">
+		<item name="android:textColor">@color/Vermelho</item>
+	</style-->
 	
 	<!--
 	<item name="android:actionDropDownStyle">@style/myapp_DropDownNav</item>        

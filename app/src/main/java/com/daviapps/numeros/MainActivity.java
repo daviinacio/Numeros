@@ -26,7 +26,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 
 	// Preferences Map
 	public static String PREFS_AUDIO = "audio";
-	public static String PREFS_ORDER = "order";
+	//public static String PREFS_ORDER = "order";
 	public static String PREFS_PLAYER = "player";
 	
 	// Components
@@ -34,7 +34,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	private LinearLayout[] lay_cor;
 	private TextView score;
 	private ProgressBar time;
-	//private RelativeLayout main_lay;
+	private RelativeLayout main_lay;
 	private TextView decrement_text;
 
 	// Variables
@@ -46,6 +46,8 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	private EnvironmentGame enviroment;
 	
 	private boolean update_asked = false;
+	
+	private boolean order = false;
 	
 	// Level variables
 	
@@ -82,6 +84,22 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 		
+		/*Notification.Builder nBuilder = new Notification.Builder(this)
+			.setSmallIcon(R.drawable.ic_launcher)
+			.setContentTitle("Numeros")
+			.setContentText("Content text")
+			.setPriority(Notification.PRIORITY_HIGH)
+			//.setChannelId("numeros")
+			.;
+			
+		Notification notif = nBuilder.build();
+			
+		NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		manager.notify(1, notif);
+
+		nBuilder.build();*/
+		
+		
 		/*	*	*	*	  Database  	*	 Database 	   *	*	*	*/
 
 		this.gameDB = new GameDB(this);
@@ -97,7 +115,10 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		this.externalAssetsPath = getExternalFilesDir("assets");
 		this.externalAssetsPath.mkdir();
 		
-		new CopyAssets(getAssets(), externalAssetsPath).copy();
+		CopyAssets ca = new CopyAssets(getAssets(), externalAssetsPath);
+		
+		//ca.copy("respack");
+		ca.copy("");
 		
 
 		this.soundfx = new SoundFXResourcePack(externalAssetsPath, "default-soundfx.zip");
@@ -106,38 +127,39 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		/*	*	*	*	  AdMob    *   Admob   *  Admob 	*	*	*	*/
 
 		MobileAds.initialize(this, "ca-app-pub-1507172442893539~2844160460");
-
-		 AdView adView = findViewById(R.id.adView);
-
-		 adView.setAdListener(new AdListener(){
-		 @Override
-		 public void onAdLoaded(){
-		 Toast.makeText(MainActivity.this, "Admob: loaded", Toast.LENGTH_SHORT).show();
-		 //ErrorDialog.show(MainActivity.this, "Admob", "Working");
-		 }
-
-		 @Override
-		 public void onAdFailedToLoad(int p1){
-		 Toast.makeText(MainActivity.this, "AdMob: Fail to load (" + p1 + ")", Toast.LENGTH_SHORT).show();
-		 }
-		 });
-
-		 AdRequest adRequest = new AdRequest.Builder()
-		 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-		 .addTestDevice("A4DDF5EC5E81FE0D117CA05BA164E8B8")
-		 .build();
-
-
-		 adView.loadAd(adRequest);
 		
-		// Variables
+		AdView adView = findViewById(R.id.adView);
+		
+		adView.setAdListener(new AdListener(){
+			@Override
+			public void onAdLoaded(){
+				//Toast.makeText(MainActivity.this, "Admob: loaded", Toast.LENGTH_SHORT).show();
+				//ErrorDialog.show(MainActivity.this, "Admob", "Working");
+			}
+		
+			@Override
+			public void onAdFailedToLoad(int p1){
+				//Toast.makeText(MainActivity.this, "AdMob: Fail to load (" + p1 + ")", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		AdRequest adRequest = new AdRequest.Builder()
+			.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+			.addTestDevice("A4DDF5EC5E81FE0D117CA05BA164E8B8")
+			.build();
+		
+		adView.loadAd(adRequest);
+		
+		/*	*	*	*	Variables 	*	Variables 	*	Variables 	*	*	*	*/
+		
 		btns_num = new int[BTNS_LENGTH];
 		btns_cor = new int[BTNS_LENGTH];
 		buffer = new int[BTNS_LENGTH];
 
 		// Static variables
 		if(cor == null)
-			cor = new int[]{getResources().getColor(R.color.Laranja),
+			cor = new int[]{
+				getResources().getColor(R.color.Laranja),
 				getResources().getColor(R.color.Azul),
 				getResources().getColor(R.color.Verde),
 				getResources().getColor(R.color.Vermelho),
@@ -150,7 +172,8 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 				getResources().getColor(R.color.Marrom)
 			};
 
-		// Components
+		/*	*	*	*	Layout 	*	Layout 	*	Layout 	*	Layout 	*	*	*	*/
+		
 		btns = new Button[]{
 			(Button) findViewById(R.id.um),
 		 	(Button) findViewById(R.id.dois),
@@ -165,18 +188,18 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		 	(LinearLayout) findViewById(R.id.lay_quatro)
 		};
 
-		score = (TextView) findViewById(R.id.pontos);
-		time = (ProgressBar) findViewById(R.id.Progresso);
+		score = findViewById(R.id.pontos);
+		time = findViewById(R.id.Progresso);
 
 		time.setMax(EnvironmentGame.TIME_MAX);
 		time.setProgress(EnvironmentGame.TIME_MED);
 
-		decrement_text = (TextView) findViewById(R.id.main_decrement);
+		decrement_text = findViewById(R.id.main_decrement);
 
-		TextView version = (TextView) findViewById(R.id.main_version);
+		TextView version = findViewById(R.id.main_version);
 		version.setText("versão: " + version.getText());
 		
-		// Game
+		/*	*	*	*	Game 	*	Game 	*	Game  	*	Game 	*	*	*	*/
 		
 		try {
 			if(gameDB.count() == 0)
@@ -186,44 +209,12 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 			enviroment.setEventListener(this);
 			enviroment.setLevel(levels[0]);
 			
-			//Game g = null;
-			
 			this.selectGame();
-			
-			//Game g = gameDB.selectById(1);
-			//Game g = new Game();
-			//enviroment.setup(g);
-			
-			
-			//Toast.makeText(this, Integer.toString(gameDB.count()), Toast.LENGTH_SHORT).show();
-			
-			//this.game = new Game();
-			//this.game = gameDB.select("1 = 1").get(0);
-			/*this.game = gameDB.selectById(3);
-			// Debug variables
-			this.game.setLevel(levels[0]);
-			this.game.setPlayer(new Player(1));
-
-
-			this.game.setEventListener(this);
-			this.game.setup(this);*/
 			
 		} catch(Exception ex){
 			
 			ErrorDialog.show(this, "MainActivity.onCreate - Create game enviroment", ex.getMessage());
 		}
-		
-		
-		/*try {
-			refresh();
-		} catch(Exception ex){
-			ErrorDialog.show(this, "Refresh", ex.getMessage());
-		}*/
-		
-		/*((Context)((Activity) this)).runOnUiThread(new Runnable(){
-			@Override
-			public void run(){}
-		});*/
     }
 	
 	private void selectGame(){
@@ -253,17 +244,18 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		return false;
 	}
 
-	public int [] clear(int array[], int valor){
+	/*public int [] clear(int array[], int valor){
 		for(int i = 0; i < array.length; i++)
 			array[i] = valor;
 		return array;
-	}
+	}*/
 
 	public int [] getRandomArray(int Max, int Min, int array[]){
 		for(int i = 0; i < array.length;){
 			int num = new Random().nextInt(Max - Min + 1);
 
 			if(!verify(array, num)){
+			//if(!(Arrays.binarySearch(array, num) >= 0)){
 				array[i] = num;
 				i++;
 			}
@@ -298,7 +290,8 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		}
 
 		enableButtons(true);
-		buffer = clear(buffer, -1);
+		//buffer = clear(buffer, -1);
+		Arrays.fill(buffer, -1);
 	}
 
 	public void btnClick(View v){
@@ -315,12 +308,59 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		
 		incrementBuffer(num);
 		
-		int a = buffer[0], b = buffer[1], c = buffer[2], d = buffer[3];
+		//int a = buffer[0]; //b = buffer[1], c = buffer[2], d = buffer[3];
+		
 		
 		int [] sorted = btns_num;
 		java.util.Arrays.sort(sorted);
 		
+		//boolean order = true;
+		
+		
 		if(buffer[3] != -1){
+			enviroment.hit(); enviroment.start(); //acertou(); start();
+		} else
+		if(buffer[2] != -1){
+			if(buffer[0] != sorted[order ? 2 : 1])
+				enviroment.fault(); // errou();
+		} else
+		if(buffer[1] != -1){
+			if(buffer[0] != sorted[order ? 1 : 2])
+				enviroment.fault(); // errou();
+		} else
+		if(buffer[0] != -1){
+			order = buffer[0] == sorted[0];
+			
+			// Toast.makeText(this, "Order: " + order, Toast.LENGTH_SHORT).show();
+			
+			if(buffer[0] != sorted[order ? 0 : 3])
+				enviroment.fault(); // errou();
+		}
+		
+		/*if(buffer[BTNS_LENGTH -1] != -1)
+			enviroment.hit();
+		else
+		if(buffer[1] != -1){
+			//boolean order = buffer[0] > buffer[1];
+			boolean order = true;
+
+			for(int i = BTNS_LENGTH -1; i >= 0; i--){
+				if(buffer[i] != -1){
+					if(buffer[0] != (order ? sorted[i] : sorted[BTNS_LENGTH - i]))
+						enviroment.fault();
+					return;
+				}
+			}
+		}
+		else
+		if(buffer[0] != -1){
+			if(buffer[0] != sorted[0] && buffer[0] != sorted[BTNS_LENGTH -1])
+				enviroment.fault();
+		}
+		else return;*/
+		
+		
+		/*if(buffer[3] != -1){
 			enviroment.hit(); enviroment.start();
 		} else
 		if(buffer[2] != -1){
@@ -334,7 +374,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		if(buffer[0] != -1){
 			if(a != sorted[0] && a != sorted[3])
 				enviroment.fault();
-		}
+		}*/
 		
 		/*if(buffer[3] != -1){
 			enviroment.hit(); enviroment.start(); //acertou(); start();
@@ -364,55 +404,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		if(this.enviroment != null)
 			this.enviroment.wakeUp();
 		
-		try {
-			/*if(this.match.getStatus() == Match.PAUSED && this.match.getScore() > 0){
-				super.onResume();
-				return;
-			}*/
 			
-			/*if(this.prefs.getInt(PREFS_D_SCORE, 0) > 0){
-				
-				new AlertDialog.Builder(this)
-					.setTitle("Partida pendente")
-					.setMessage("Existe uma partida pendente salva")
-					.setPositiveButton("Continuar", new DialogInterface.OnClickListener(){
-						@Override
-						public void onClick(DialogInterface p1, int p2){
-							MainActivity.this.state = S_PAUSED;
-
-							// Load game states
-							MainActivity.this.tempo = MainActivity.this.prefs.getInt(PREFS_D_TEMPO, 0);
-							MainActivity.this.pontos = MainActivity.this.prefs.getInt(PREFS_D_SCORE, 0);
-							MainActivity.this.acertos = MainActivity.this.prefs.getInt(PREFS_D_ACERTOS, 0);
-							MainActivity.this.erros = MainActivity.this.prefs.getInt(PREFS_D_ERRORS, 0);
-							MainActivity.this.increment = MainActivity.this.prefs.getInt(PREFS_D_INCREMENT, 0);
-							MainActivity.this.decrement = MainActivity.this.prefs.getInt(PREFS_D_DECREMENT, 0);
-							
-							MainActivity.this.run = true;
-						}
-					})
-					.setNegativeButton("Nova partida", new DialogInterface.OnClickListener(){
-						@Override
-						public void onClick(DialogInterface p1, int p2){
-							MainActivity.this.stop();
-						}
-					})
-					.setOnCancelListener(new DialogInterface.OnCancelListener(){
-						@Override
-						public void onCancel(DialogInterface p1){
-							MainActivity.this.onBackPressed();
-						}
-					})
-					.show();
-				
-			} else {
-				this.stop();
-			}*/
-				
-		} catch (Exception ex){
-			ErrorDialog.show(this, "onResume[" + ex.getClass().getSimpleName() + "]", ex.getMessage());
-		}
-		
 		if(!update_asked){
 			UpdateChecker.check(this);
 			update_asked = true;
@@ -427,32 +419,6 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 			this.enviroment.sleep();
 			
 		this.enviroment.pause();
-			
-		/*if(this.enviroment.getGame() != null)
-			if(this.enviroment.getGame().getStatus() != EnviromentGame.STOPPED)
-				gameDB.update(this.enviroment.getGame());*/
-		
-		//gameDB.insert(game);
-		
-		// Save game state
-		/*if(state != S_STOPED){
-			Toast.makeText(this, "Partida salva", Toast.LENGTH_SHORT).show();
-			
-			SharedPreferences.Editor edit = this.prefs.edit();
-			
-			edit.putInt(PREFS_D_TEMPO, tempo);
-			edit.putInt(PREFS_D_SCORE, pontos);
-			edit.putInt(PREFS_D_ACERTOS, acertos);
-			edit.putInt(PREFS_D_ERRORS, erros);
-			edit.putInt(PREFS_D_INCREMENT, increment);
-			edit.putInt(PREFS_D_DECREMENT, decrement);
-			
-			edit.commit();
-			edit.apply();
-		}
-		
-		if(this.state == S_RUNNING)
-			this.state = S_PAUSED;*/
 		
 		super.onPause();
 	}
@@ -467,33 +433,14 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	}
 	
 	// Game functions
-	
-	@Override
-	protected void onStart(){
-		// TODO: Implement this method
-		super.onStart();
-	}
-
-	/*@Override
-	public void onGameSetup(Game g){
-		//Toast.makeText(this, "onGameSetup", Toast.LENGTH_SHORT).show();
-		time.setMax(EnviromentGame.TIME_MAX);
-		time.setProgress(g.getTime());
-		
-		try { refresh(); } catch(Exception ex){
-			ErrorDialog.show(this, "MainActivity.onGameSetup - Refresh", ex.getMessage());
-		}
-	}*/
-
 	@Override
 	public void onGameSetup(Game g){
 		//Toast.makeText(this, "onGameSetup", Toast.LENGTH_SHORT).show();
 		
 		refresh();
 		
-		// TODO: Implement this method
-		
-		//enviroment.pause();
+		statusMenu.setIcon(getResources().getDrawable(R.drawable.baseline_pause_white_48dp));
+		statusMenu.setEnabled(false);
 	}
 
 	@Override
@@ -557,7 +504,8 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		this.soundfx.find("fault").start();
 
 		enableButtons(true);
-		buffer = clear(buffer, -1);
+		//buffer = clear(buffer, -1);
+		Arrays.fill(buffer, -1);
 	}
 
 	@Override
@@ -566,20 +514,6 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		time.setProgress(g.getTime() >= EnvironmentGame.TIME_MIN ? g.getTime() : EnvironmentGame.TIME_MIN);
 	}
 	
-	
-	// Audio
-	/*public void som(int audioId){
-		if(prefs.getBoolean(PREFS_AUDIO, false))
-			if(audioId == A_ACERTOU)
-				;
-			else if(audioId == A_ERROU)
-				//MediaPlayer.create(this, R.raw.errou).start();
-			else if(audioId == A_NAO_CONSEGUE)
-				//MediaPlayer.create(this, R.raw.nao_).start();
-			else if(audioId == A_PERDEU)
-				//MediaPlayer.create(this, R.raw.nao).start();
-	}*/
-
 	// Menu item
 	public void confAudio(boolean active){
 		try{
@@ -605,23 +539,6 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 			
 	}
 
-	/*public void confOrder(boolean order){
-		try{
-			SharedPreferences.Editor edit = this.prefs.edit();
-			edit.putBoolean(PREFS_ORDER, order);
-			edit.commit();
-			edit.apply();
-			
-		} catch(NullPointerException ex){
-			ErrorDialog.show(this, "MainActivity.confOrder()", ex.getMessage());
-		}
-		
-		if(order)
-			orderMenu.setIcon(getResources().getDrawable(R.drawable.up_2));
-		else
-			orderMenu.setIcon(getResources().getDrawable(R.drawable.down_4));
-	}*/
-
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu){
 		try {
@@ -631,7 +548,6 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 			
 			confAudio(this.prefs.getBoolean(PREFS_AUDIO, false));
 			//confOrder(this.prefs.getBoolean(PREFS_ORDER, true));
-			
 			
 			
 		} catch(Exception ex){
@@ -663,58 +579,48 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 				if(enviroment.getStatus() == EnvironmentGame.PAUSED)
 					enviroment.start();
 				return true;
+			
+			case R.id.menu_players:
+				//new PlayerListDialog(this).show();
+				
+				new PlayerEditorDialog.Builder(this)
+						.setOnSaveListener(new EditorDialog.OnSaveListener<Player>(){
+							@Override
+							public boolean onSave(Player item){
+								Toast.makeText(MainActivity.this, "Player editor saved\n" + item, Toast.LENGTH_LONG).show();
+								return true;
+							}
+						})
+						.setOnDeleteListener(new EditorDialog.OnDeleteListener<Player>(){
+							@Override
+							public boolean onDelete(Player item){
+								Toast.makeText(MainActivity.this, "Player editor deleted\n" + item, Toast.LENGTH_LONG).show();
+								return true;
+							}
+						})
+						.setOnCancelListener(new EditorDialog.OnCancelListener(){
+							@Override
+							public void onCancel(DialogInterface p1){
+								Toast.makeText(MainActivity.this, "Player editor canceled", Toast.LENGTH_SHORT).show();
+							}
+						})
+						.show();
+				
+				
+				/*new PlayerEditorDialog.Builder(this)
+						.setOnDoneListener(new EditorDialog.OnDoneListener<Player>() {
+							@Override
+							public void onDone(Player e){
+								
+							}
+						})
+						.show();*/
+				return true;
 				
 			case R.id.menu_about:
 				new GameListDialog(this).show();
 				return true;
 		}
-		
-
-
-        /*if (id == R.id.menu_info) {	
-			//gameDB.insert(this.game);
-			//Toast.makeText(this, "Game state saved", Toast.LENGTH_SHORT).show();
-			//Toast.makeText(this, "Database length (" + gameDB.count() + ")", Toast.LENGTH_SHORT).show();
-		}
-		else 
-		if (id == R.id.menu_info_pontos){
-			new GameListDialog(this).show();
-			
-			//Toast.makeText(this, "Função em desenvolvimento", Toast.LENGTH_SHORT).show();
-			
-		}
-		else
-		if (id == R.id.menu_info_settings){
-			new GameListDialog.Builder(this)
-					.setOnSelectListener(new GameListDialog.OnSelectListener(){
-						@Override
-						public void onSelect(Game game){
-							Toast.makeText(MainActivity.this, game.toString(), Toast.LENGTH_SHORT).show();
-						}
-					})
-					.build()
-					.show();
-			
-			//Toast.makeText(this, "Função em desenvolvimento", Toast.LENGTH_SHORT).show();
-		}
-		else
-		if (id == R.id.menu_info_players){
-			//new PlayerEditorDialog(this).show();
-			new PlayerListDialog(this).show();
-			//Toast.makeText(this, "Função em desenvolvimento", Toast.LENGTH_SHORT).show();
-			
-		}
-		else
-		if (id == R.id.menu_som_power) {
-			confAudio(!this.prefs.getBoolean(PREFS_AUDIO, false));
-            return true;
-		}
-		else 
-		if(id == R.id.menu_mode) {
-			confOrder(!this.prefs.getBoolean(PREFS_ORDER, false));
-			refresh();
-            return true;
-		}*/
 
         return super.onOptionsItemSelected(item);
     }

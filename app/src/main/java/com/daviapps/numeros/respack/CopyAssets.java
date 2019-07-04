@@ -14,13 +14,13 @@ public class CopyAssets {
 	}
 	
 	
-	public void copy(){
+	public void copy(String folder){
 		// TODO: Refactore this method
 		
 		
 		String[] files = null;
 		try {
-			files = assetManager.list("");
+			files = assetManager.list(folder);
 		} catch (IOException e) {
 			Log.e("tag", "Failed to get asset file list.", e);
 		}

@@ -8,4 +8,16 @@
 	<string name="update_index">http://daviapps.6te.net/json/download_list.json</string>
 	<string name="debug_update_index">http://localhost:12345/download_list.json</string>
 	
+	<string name="title_player_editor">Player Editor</string>
+	
+	
+	<string name="title_editordialog_delete_confirm">Deletar item</string>
+	<string name="message_editordialog_delete_confirm">O item será removido\nCliaue em Ok para continuar.</string>
+	
+	<!-- words -->
+	<string name="delete">Delete</string>
+	<string name="cancel">Cancel</string>
+	<string name="save">Save</string>
+	<string name="ok">Ok</string>
+	
 </resources>

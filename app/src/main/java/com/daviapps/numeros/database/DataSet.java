@@ -6,7 +6,7 @@ public abstract class DataSet <E> {
 	SimpleDateFormat timeFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 	
 	// Abstract methods
-	public abstract void insert(E item);
+	public abstract E insert(E item);
 	public abstract void update(E item);
 	public abstract void delete(E item);
 	public abstract List<E> select(String where, String order);

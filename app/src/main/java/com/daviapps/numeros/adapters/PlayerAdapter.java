@@ -50,10 +50,11 @@ public class PlayerAdapter extends BaseAdapter implements GenericBaseAdapter<Pla
 	}
 	
 	@Override
-	public void addItem(Player player){
-		this.items.add(player);
-		this.db.insert(player);
+	public Player addItem(Player e){
+		e = this.db.insert(e);
+		this.items.add(e);
 		this.notifyDataSetChanged();
+		return e;
 	}
 	
 	@Override
@@ -62,21 +63,21 @@ public class PlayerAdapter extends BaseAdapter implements GenericBaseAdapter<Pla
 	}
 
 	@Override
-	public void setItem(Player player){
-		this.items.set(this.items.indexOf(player), player);
-		this.db.update(player);
+	public void setItem(Player e){
+		this.items.set(this.items.indexOf(e), e);
+		this.db.update(e);
 		this.notifyDataSetChanged();
 	}
 
 	@Override
-	public void removeItem(Player player){
-		if(player.getNickname().equals("anonymous")){
+	public void removeItem(Player e){
+		if(e.getNickname().equals("anonymous")){
 			Toast.makeText(context, "Esse player não pode ser removido", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		
-		this.items.remove(player);
-		this.db.delete(player);
+		this.items.remove(e);
+		this.db.delete(e);
 		this.notifyDataSetChanged();
 	}
 	

@@ -1,40 +1,96 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+	android:padding="10dp">
 	
 	<LinearLayout
-		android:layout_height="match_parent"
-		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
 		android:orientation="vertical">
 		
 		<TextView
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:text="nickname"/>
+			android:text="Nickname"/>
 		
 		<EditText
-			android:layout_height="match_parent"
-			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
 			android:id="@+id/dialog_editor_player_edit_nickname"/>
 		
 	</LinearLayout>
 	
 	<LinearLayout
-		android:layout_height="match_parent"
-		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
 		android:orientation="vertical">
 
 		<TextView
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:text="password"/>
+			android:text="Senha"
+			android:id="@+id/dialog_editor_player_label_passwd1"/>
 
 		<EditText
-			android:layout_height="match_parent"
-			android:layout_width="wrap_content"
-			android:id="@+id/dialog_editor_player_edit_passwd"/>
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:id="@+id/dialog_editor_player_edit_passwd1"/>
 
+	</LinearLayout>
+	
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="vertical">
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="Confirme a senha"
+			android:id="@+id/dialog_editor_player_label_passwd2"/>
+
+		<EditText
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:id="@+id/dialog_editor_player_edit_passwd2"/>
+
+	</LinearLayout>
+	
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal">
+		
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			style="@style/AppTheme.Dialog.Button.Danger"
+			android:text="@string/delete"
+			android:id="@+id/dialog_editor_delete"/>
+		
+		<LinearLayout
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:orientation="horizontal"
+			android:gravity="right">
+			
+			<Button
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				style="@style/AppTheme.Dialog.Button.Secondary"
+				android:text="@string/cancel"
+				android:id="@+id/dialog_editor_cancel"/>
+
+			<Button
+				android:layout_height="wrap_content"
+				android:layout_width="wrap_content"
+				style="@style/AppTheme.Dialog.Button.Primary"
+				android:text="@string/save"
+				android:id="@+id/dialog_editor_save"/>
+			
+		</LinearLayout>
+		
 	</LinearLayout>
     
 </LinearLayout>

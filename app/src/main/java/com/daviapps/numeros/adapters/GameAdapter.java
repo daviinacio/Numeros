@@ -8,10 +8,12 @@ import java.util.*;
 import com.daviapps.numeros.database.*;
 import com.daviapps.numeros.*;
 import java.text.*;
+import android.graphics.*;
 
 public class GameAdapter extends BaseAdapter implements GenericBaseAdapter<Game> {
 	private List<Game> items;
 	private DataSet<Game> db;
+	private DataSet<Player>  pdb;
 	
 	private Context context;
 	
@@ -20,6 +22,7 @@ public class GameAdapter extends BaseAdapter implements GenericBaseAdapter<Game>
 	public GameAdapter(Context context){
 		this.items = new ArrayList<>();
 		this.db = new GameDB(context);
+		this.pdb = new PlayerDB(context);
 		
 		this.context = context;
 		this.dateFormat = new SimpleDateFormat("dd\nMMMM");
@@ -49,6 +52,8 @@ public class GameAdapter extends BaseAdapter implements GenericBaseAdapter<Game>
 		// Data
 		Game item = this.items.get(i);
 		
+		player.setText("" + pdb.selectById(item.getPlayer()).getNickname());
+		
 		try {
 			average.setText(String.format("%s%%", (((int) (((double) item.getHits() / (item.getHits() + item.getFaults())) * 100)))));
 		}
@@ -58,6 +63,11 @@ public class GameAdapter extends BaseAdapter implements GenericBaseAdapter<Game>
 		
 		score.setText(Integer.toString(item.getScore()));
 		date.setText(dateFormat.format(item.getDateStart()));
+		
+		if(item.getStatus() == EnvironmentGame.STOPPED){
+			//layout.setBackgroundColor(Color.rgb(128, 32, 32));
+			layout.setBackgroundColor(Color.argb(50, 255, 0, 0));
+		}
 		
 		return layout;
 	}

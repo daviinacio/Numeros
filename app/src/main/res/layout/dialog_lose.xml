@@ -1,6 +1,132 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+	android:paddingTop="10dp"
     android:orientation="vertical">
+	
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
+		
+		<TextView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textSize="15sp"
+			android:gravity="center"
+			android:text="Pontos"/>
+		
+		<TextView
+			android:id="@+id/dialog_lose_score"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textSize="50sp"
+			android:gravity="center"
+			android:text="1000"/>
+		
+	</LinearLayout>
+	
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+			
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:textSize="15sp"
+				android:gravity="center"
+				android:text="Acertos"/>
+			
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:textSize="15sp"
+				android:gravity="center"
+				android:text="Média"/>
+			
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:textSize="15sp"
+				android:gravity="center"
+				android:text="Erros"/>
+			
+		</LinearLayout>
+		
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+
+			<TextView
+				android:id="@+id/dialog_lose_hits"
+				android:layout_width="match_parent"
+				android:layout_height="fill_parent"
+				android:layout_weight="1"
+				android:textSize="25sp"
+				android:gravity="center"
+				android:text="10"/>
+			
+			<TextView
+				android:id="@+id/dialog_lose_average"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:textSize="35sp"
+				android:gravity="center"
+				android:text="40%"/>
+			
+			<TextView
+				android:id="@+id/dialog_lose_faults"
+				android:layout_width="match_parent"
+				android:layout_height="fill_parent"
+				android:layout_weight="1"
+				android:textSize="25sp"
+				android:gravity="center"
+				android:text="5"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+	
+	
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="100dp"
+		android:orientation="vertical"
+		android:gravity="center">
+
+		<LinearLayout
+			android:layout_width="200dp"
+			android:layout_height="wrap_content"
+			android:background="#e0e0e0"
+			android:orientation="vertical"
+			android:padding="2dp">
+
+			<Button
+				android:id="@+id/dialog_lose_try_again"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:text="Try again"
+				android:textColor="#e0e0e0"
+				android:background="#303030"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+	
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="5dp"
+		android:background="@color/colorPrimary"/>
     
 </LinearLayout>

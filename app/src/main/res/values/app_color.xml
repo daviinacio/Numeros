@@ -3,4 +3,6 @@
 	<color name="colorPrimary">@color/Azul</color>
 	<color name="colorPrimaryDark">#555555</color>
 	<color name="colorAccent">@color/VerdeAgua</color>
+	
+	<color name="dialogBackground">#404040</color>
 </resources>

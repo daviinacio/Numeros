@@ -39,9 +39,9 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 
 	// Variables
 	private int [] btns_num;
-	private int [] btns_cor;
+	private int [] btns_colors;
 	
-	private int [] buffer;
+	private int [] num_buffer;
 	
 	private EnvironmentGame enviroment;
 	
@@ -61,7 +61,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	};
 	
 	// Static variables
-	private static int [] cor;
+	private static int [] color_array;
 
 	// Config
 	private SharedPreferences prefs;
@@ -118,7 +118,8 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		CopyAssets ca = new CopyAssets(getAssets(), externalAssetsPath);
 		
 		//ca.copy("respack");
-		ca.copy("");
+		//ca.copy("");
+		ca.copyWhatContainsString(".zip");
 		
 
 		this.soundfx = new SoundFXResourcePack(externalAssetsPath, "default-soundfx.zip");
@@ -153,24 +154,12 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		/*	*	*	*	Variables 	*	Variables 	*	Variables 	*	*	*	*/
 		
 		btns_num = new int[BTNS_LENGTH];
-		btns_cor = new int[BTNS_LENGTH];
-		buffer = new int[BTNS_LENGTH];
+		btns_colors = new int[BTNS_LENGTH];
+		num_buffer = new int[BTNS_LENGTH];
 
 		// Static variables
-		if(cor == null)
-			cor = new int[]{
-				getResources().getColor(R.color.Laranja),
-				getResources().getColor(R.color.Azul),
-				getResources().getColor(R.color.Verde),
-				getResources().getColor(R.color.Vermelho),
-				getResources().getColor(R.color.VerdeAgua),
-				getResources().getColor(R.color.Amarelo),
-				getResources().getColor(R.color.roxo),
-				getResources().getColor(R.color.VerdeEscuro),
-				getResources().getColor(R.color.VerdeLimao),
-				getResources().getColor(R.color.Magenta),
-				getResources().getColor(R.color.Marrom)
-			};
+		if(color_array == null)
+			color_array = getResources().getIntArray(R.array.color_array);
 
 		/*	*	*	*	Layout 	*	Layout 	*	Layout 	*	Layout 	*	*	*	*/
 		
@@ -266,8 +255,8 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	
 	public void incrementBuffer(int n){
 		for(int i = BTNS_LENGTH - 1; i > 0; i--)
-			buffer[i] = buffer[i - 1];
-		buffer[0] = n;
+			num_buffer[i] = num_buffer[i - 1];
+		num_buffer[0] = n;
 	}
 	
 	// Components functions
@@ -281,17 +270,17 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		if(!this.enviroment.getLevel().charMode)	btns_num = getRandomArray(9, 0, btns_num);
 		else btns_num = getRandomArray(25, 0, btns_num);
 			
-		btns_cor = getRandomArray(cor.length -1, 0, btns_cor);
+		btns_colors = getRandomArray(color_array.length -1, 0, btns_colors);
 
 		for(int i = 0; i < BTNS_LENGTH; i++){
-			lay_cor[i].setBackgroundColor(cor[btns_cor[i]]);
+			lay_cor[i].setBackgroundColor(color_array[btns_colors[i]]);
 			//btns[i].setText(charMode ? "" + (char) (CHAR_INIT + btns_num[i]) : "" + btns_num[i]);
 			btns[i].setText(this.enviroment.getLevel().charMode ? "" + (char) (CHAR_INIT + btns_num[i]) : "" + btns_num[i]);
 		}
 
 		enableButtons(true);
 		//buffer = clear(buffer, -1);
-		Arrays.fill(buffer, -1);
+		Arrays.fill(num_buffer, -1);
 	}
 
 	public void btnClick(View v){
@@ -317,23 +306,23 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		//boolean order = true;
 		
 		
-		if(buffer[3] != -1){
+		if(num_buffer[3] != -1){
 			enviroment.hit(); enviroment.start(); //acertou(); start();
 		} else
-		if(buffer[2] != -1){
-			if(buffer[0] != sorted[order ? 2 : 1])
+		if(num_buffer[2] != -1){
+			if(num_buffer[0] != sorted[order ? 2 : 1])
 				enviroment.fault(); // errou();
 		} else
-		if(buffer[1] != -1){
-			if(buffer[0] != sorted[order ? 1 : 2])
+		if(num_buffer[1] != -1){
+			if(num_buffer[0] != sorted[order ? 1 : 2])
 				enviroment.fault(); // errou();
 		} else
-		if(buffer[0] != -1){
-			order = buffer[0] == sorted[0];
+		if(num_buffer[0] != -1){
+			order = num_buffer[0] == sorted[0];
 			
 			// Toast.makeText(this, "Order: " + order, Toast.LENGTH_SHORT).show();
 			
-			if(buffer[0] != sorted[order ? 0 : 3])
+			if(num_buffer[0] != sorted[order ? 0 : 3])
 				enviroment.fault(); // errou();
 		}
 		
@@ -487,6 +476,21 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		statusMenu.setEnabled(false);
 		
 		enableButtons(false);
+		
+		new LoseDialog.Builder(this)
+				.setOnTryAgainListener(new LoseDialog.OnTryAgainListener(){
+					@Override
+					public void onTryAgain(){
+						Toast.makeText(MainActivity.this, "try again", Toast.LENGTH_SHORT).show();
+					}
+				})
+				.setOnCancelListener(new DialogInterface.OnCancelListener(){
+					@Override
+					public void onCancel(DialogInterface p1){
+						Toast.makeText(MainActivity.this, "cancel", Toast.LENGTH_SHORT).show();
+					}
+				})
+				.show();
 	}
 
 	@Override
@@ -505,7 +509,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 
 		enableButtons(true);
 		//buffer = clear(buffer, -1);
-		Arrays.fill(buffer, -1);
+		Arrays.fill(num_buffer, -1);
 	}
 
 	@Override
@@ -581,9 +585,30 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 				return true;
 			
 			case R.id.menu_players:
+				
+				new LoseDialog.Builder(this)
+						.setOnTryAgainListener(new LoseDialog.OnTryAgainListener(){
+							@Override
+							public void onTryAgain(){
+								Toast.makeText(MainActivity.this, "Try again", Toast.LENGTH_SHORT).show();
+							}
+						})
+						.setOnCancelListener(new LoseDialog.OnCancelListener(){
+							@Override
+							public void onCancel(DialogInterface p1){
+								Toast.makeText(MainActivity.this, "Cancel", Toast.LENGTH_SHORT).show();
+							}
+						})
+						.show();
+				
 				//new PlayerListDialog(this).show();
 				
-				new PlayerEditorDialog.Builder(this)
+				/*Player pl = new Player();
+				
+				pl.setNickname("Player teste");
+				pl.setPassword("abcd");
+				
+				new PlayerEditorDialog.Builder(this, pl)
 						.setOnSaveListener(new EditorDialog.OnSaveListener<Player>(){
 							@Override
 							public boolean onSave(Player item){
@@ -604,7 +629,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 								Toast.makeText(MainActivity.this, "Player editor canceled", Toast.LENGTH_SHORT).show();
 							}
 						})
-						.show();
+						.show();*/
 				
 				
 				/*new PlayerEditorDialog.Builder(this)

@@ -14,6 +14,12 @@
 	<string name="title_editordialog_delete_confirm">Deletar item</string>
 	<string name="message_editordialog_delete_confirm">O item será removido\nCliaue em Ok para continuar.</string>
 	
+	<!-- Toast -->
+	<string name="toast_password_do_not_match">As senhas não confere!</string>
+	<string name="toast_password_invalid">Senha incorreta!</string>
+	<string name="toast_password_cant_repite">A nova senha não pode ser igual a anterior!</string>
+	<string name="toast_password_min_char">A senha deve ter no mínimo %s caracteres!</string>
+	
 	<!-- words -->
 	<string name="delete">Delete</string>
 	<string name="cancel">Cancel</string>

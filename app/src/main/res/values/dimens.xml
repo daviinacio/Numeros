@@ -15,4 +15,5 @@
 	
 	<dimen name="AdapterGameHeight">50dp</dimen>
 	<dimen name="AdapterGameTextSize">18dp</dimen>
+	<dimen name="AdapterGameDateTextSize">16dp</dimen>
 </resources>

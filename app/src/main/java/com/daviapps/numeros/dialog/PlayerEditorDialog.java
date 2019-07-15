@@ -8,6 +8,9 @@ import android.view.*;
 import com.daviapps.numeros.database.*;
 
 public class PlayerEditorDialog extends EditorDialog<Player> {
+	// Statics
+	private static final int minChar = 6;
+	
 	// Visual
 	private Button btnSave, btnCancel, btnDelete;
 	private TextView labelPassword1, labelPassword2;
@@ -98,19 +101,31 @@ public class PlayerEditorDialog extends EditorDialog<Player> {
 		
 		item.setNickname(this.editName.getText().toString());
 		
-		// New item
-		if(state){
-			if(!this.editPassword1.getText().toString().isEmpty()){
-				if(this.editPassword1.getText().toString().equals(this.editPassword2.getText().toString())){
-					item.setPassword(this.editPassword1.getText().toString());
-				} 
-				else
-					throw new IllegalArgumentException("A senha não confere");
+		// Any password was typped
+		if(!this.editPassword1.getText().toString().isEmpty()  || !this.editPassword2.getText().toString().isEmpty()){
+			// New item
+			if(state){
+				//if(this.editPassword2.getText().toString().isEmpty())
+				
+				if(!this.editPassword1.getText().toString().equals(this.editPassword2.getText().toString()))
+					throw new IllegalArgumentException(getContext().getString(R.string.toast_password_do_not_match));
 			}
-		}
-		// Edit item
-		else {
+			// Edit item
+			else {
+				if(!this.editPassword1.getText().toString().equals(item.getPassword()))
+					throw new IllegalArgumentException(getContext().getString(R.string.toast_password_invalid));
+					
+				if(this.editPassword2.getText().toString().equals(item.getPassword()))
+					throw new IllegalArgumentException(getContext().getString(R.string.toast_password_cant_repite));
+			}
 			
+			// Min character length
+			if(this.editPassword2.getText().toString().length() < minChar)
+				throw new IllegalArgumentException(getContext().getString(R.string.toast_password_min_char, minChar));
+			
+			
+			// Put new password on item
+			item.setPassword(this.editPassword2.getText().toString());
 		}
 	}
 	

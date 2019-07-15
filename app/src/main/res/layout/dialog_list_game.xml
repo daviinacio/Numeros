@@ -14,7 +14,7 @@
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:layout_weight="0.5"
+			android:layout_weight="0.35"
 			android:orientation="horizontal">
 
 			<TextView
@@ -28,7 +28,7 @@
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:layout_weight="0.5"
+			android:layout_weight="0.475"
 			android:gravity="center"
 			android:orientation="horizontal">
 

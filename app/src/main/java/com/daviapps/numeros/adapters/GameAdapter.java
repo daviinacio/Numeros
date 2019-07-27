@@ -25,7 +25,7 @@ public class GameAdapter extends BaseAdapter implements GenericBaseAdapter<Game>
 		this.pdb = new PlayerDB(context);
 		
 		this.context = context;
-		this.dateFormat = new SimpleDateFormat("dd\nMMMM");
+		this.dateFormat = new SimpleDateFormat("dd MMMM\nyyyy");
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class GameAdapter extends BaseAdapter implements GenericBaseAdapter<Game>
 		final LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.adapter_game, null);
 		
 		// Layout
-		TextView player = layout.findViewById(R.id.adapter_game_player);
+		//TextView player = layout.findViewById(R.id.adapter_game_player);
 		TextView average = layout.findViewById(R.id.adapter_game_average);
 		TextView score = layout.findViewById(R.id.adapter_game_score);
 		TextView date = layout.findViewById(R.id.adapter_game_date);
@@ -52,7 +52,7 @@ public class GameAdapter extends BaseAdapter implements GenericBaseAdapter<Game>
 		// Data
 		Game item = this.items.get(i);
 		
-		player.setText("" + pdb.selectById(item.getPlayer()).getNickname());
+		//player.setText("" + pdb.selectById(item.getPlayer()).getNickname());
 		
 		try {
 			average.setText(String.format("%s%%", (((int) (((double) item.getHits() / (item.getHits() + item.getFaults())) * 100)))));

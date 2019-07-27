@@ -18,10 +18,6 @@ public class LoseDialog extends Dialog {
 	// Listener
 	private OnTryAgainListener onTryAgainListener;
 	
-	public LoseDialog(Context context){
-		super(context);
-	}
-	
 	public LoseDialog(Context context, Game game){
 		super(context);
 		this.game = game;
@@ -44,13 +40,17 @@ public class LoseDialog extends Dialog {
 		this.tvScore.setText(String.format("%s", game.getScore()));
 		this.tvHits.setText(String.format("%s", game.getHits()));
 		this.tvFaults.setText(String.format("%s", game.getFaults()));
+		this.tvAverage.setText(String.format("%s%%", (((int) (((double) game.getHits() / (game.getHits() + game.getFaults())) * 100)))));
 		//this.tvAverage.setText(String.format("%s", g
 		
 		// onClick Listener
 		this.btTryAgain.setOnClickListener(new View.OnClickListener(){
 			@Override
 			public void onClick(View v){
-				
+				if(onTryAgainListener != null){
+					onTryAgainListener.onTryAgain();
+					dismiss();
+				}
 			}
 		});
 		
@@ -70,10 +70,7 @@ public class LoseDialog extends Dialog {
 	}
 	
 	public static final class Builder extends DialogBuilder<LoseDialog> {
-		public Builder(Context context){
-			super(new LoseDialog(context));
-		}
-
+		
 		public Builder(Context context, Game game){
 			super(new LoseDialog(context, game));
 		}

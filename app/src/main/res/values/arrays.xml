@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<array name="color_array">
-		<item>@color/Laranja</item>
-		<item>@color/Azul</item>
-		<item>@color/Verde</item>
-		<item>@color/Vermelho</item>
-		<item>@color/VerdeAgua</item>
-		<item>@color/Amarelo</item>
-		<item>@color/roxo</item>
-		<item>@color/VerdeEscuro</item>
-		<item>@color/VerdeLimao</item>
-		<item>@color/Magenta</item>
-		<item>@color/Marrom</item>
+		<item>@color/orange</item>
+		<item>@color/blue</item>
+		<item>@color/green</item>
+		<item>@color/red</item>
+		<item>@color/cyan</item>
+		<item>@color/yellow</item>
+		<item>@color/purple</item>
+		<item>@color/darkGreen</item>
+		<item>@color/lemon</item>
+		<item>@color/magenta</item>
+		<item>@color/brown</item>
 	</array>
 </resources>

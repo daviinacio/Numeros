@@ -17,7 +17,7 @@
     </style>
 
     <style name="AppTheme.Dialog.Button.Primary" parent="@style/AppTheme.Dialog.Button">
-        <item name="android:textColor">@color/Verde</item>
+        <item name="android:textColor">@color/green</item>
     </style>
 
     <style name="AppTheme.Dialog.Button.Secondary" parent="@style/AppTheme.Dialog.Button">
@@ -25,11 +25,11 @@
     </style>
 
     <style name="AppTheme.Dialog.Button.Success" parent="@style/AppTheme.Dialog.Button">
-        <item name="android:textColor">@color/Verde</item>
+        <item name="android:textColor">@color/green</item>
     </style>
 
     <style name="AppTheme.Dialog.Button.Danger" parent="@style/AppTheme.Dialog.Button">
-        <item name="android:textColor">@color/Vermelho</item>
+        <item name="android:textColor">@color/red</item>
     </style>
 		
 	<!--style name="AppTheme.Dialog.Button" parent="">

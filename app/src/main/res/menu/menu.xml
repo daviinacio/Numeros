@@ -13,8 +13,11 @@
 	<!-- android:showAsAction=["ifRoom" | "never" | "withText" | "always" | "collapseActionView"] -->
 		
 		
-	<item android:id="@+id/menu_status" android:title="Som ativo"
-		android:orderInCategory="99" android:showAsAction="ifRoom"
+	<item 
+		android:id="@+id/menu_status"
+		android:title="play/pause"
+		android:orderInCategory="99"
+		android:showAsAction="ifRoom"
 		android:icon="@drawable/baseline_stop_white_48dp"/>
 		
 	<!--item android:id="@+id/menu_config" android:title="Menu"
@@ -22,34 +25,33 @@
 	android:icon="@drawable/settings">
 	<menu-->
 		
-		<item
+		<!--item
 			android:id="@+id/menu_sound"
 			android:title="Som ativo"
 			android:orderInCategory="99"
 			android:showAsAction="never"
-			android:icon="@drawable/audio_1"/>
+			android:icon="@drawable/audio_1"/-->
 	
-		<item 
+		<!--item 
 			android:id="@+id/menu_players"
 			android:orderInCategory="99"
 			android:showAsAction="never"
 			android:icon="@drawable/users"
-			android:title="Players" />
+			android:title="Players" /-->
+			
+		<item 
+			android:id="@+id/menu_settings"
+			android:title="@string/settings"
+			android:orderInCategory="100"
+			android:showAsAction="never"
+			android:icon="@drawable/settings"/>
 	
 		<item 
 			android:id="@+id/menu_about"
-			android:title="Sobre"
+			android:title="@string/about"
         	android:orderInCategory="100"
 			android:showAsAction="never"
 			android:icon="@drawable/info_2"/>
-		
-		<item 
-			android:id="@+id/menu_info_settings"
-			android:orderInCategory="100"
-			android:showAsAction="never"
-			android:icon="@drawable/settings"
-			android:title="Configuração"
-			android:visible="false"/>
 		
 	<!--/menu>
 	</item-->

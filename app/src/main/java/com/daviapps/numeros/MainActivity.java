@@ -20,9 +20,10 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	//private static final int A_HIT = 1000, A_ERROU = 1001, A_, A_PERDEU = 1003;
 	
 	private static final int BTNS_LENGTH = 4;
-	
 	private static final int CHAR_INIT = 65;
 	
+	private static final int VIBRATOR_FAULT = 500, VIBRATOR_HIT = 75, VIBRATOR_CLICK = 25;
+	private static final int DELAY_FAULT = 500;
 
 	// Preferences Map
 	public static String PREFS_AUDIO = "audio";
@@ -49,8 +50,10 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	
 	private boolean order = false;
 	
-	// Level variables
+	// Android
+	private Vibrator vibrator;
 	
+	// Level variables
 	private Level [] levels = {
 		new Level(false, 1),
 		new Level(false, 2),
@@ -71,7 +74,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	DataSet<Player> playerDB;
 	
 	//Menu item
-	private MenuItem audioMenu;
+	//private MenuItem audioMenu;
 	private MenuItem statusMenu;
 	//private MenuItem orderMenu;
 	
@@ -160,6 +163,17 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		// Static variables
 		if(color_array == null)
 			color_array = getResources().getIntArray(R.array.color_array);
+			
+		/*	*	*	*	Android *	Android *	Android *	Android *	*	*	*/
+		
+		this.vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		
+		/*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+		} else {
+			//deprecated in API 26 
+			v.vibrate(500);
+		}*/
 
 		/*	*	*	*	Layout 	*	Layout 	*	Layout 	*	Layout 	*	*	*	*/
 		
@@ -211,7 +225,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 			.setOnSelectListener(new GameListDialog.OnSelectListener(){
 				@Override
 				public void onSelect(Game game){
-					Toast.makeText(MainActivity.this, game.toString(), Toast.LENGTH_SHORT).show();
+					//Toast.makeText(MainActivity.this, game.toString(), Toast.LENGTH_SHORT).show();
 					MainActivity.this.enviroment.setup(game);
 				}
 			})
@@ -304,6 +318,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		java.util.Arrays.sort(sorted);
 		
 		//boolean order = true;
+		vibrate(VIBRATOR_CLICK);
 		
 		
 		if(num_buffer[3] != -1){
@@ -382,6 +397,11 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		}*/
 	}
 	
+	private void vibrate(int duration){
+		if(prefs.getBoolean("vibrate", true))
+			vibrator.vibrate(duration);
+	}
+	
 	/*public void updateVisual(){
 		score.setText("Pontos: " + this.game.getScore());
 		time.setProgress(this.game.getTime() >= Game.TIME_MIN ? this.game.getTime() : Game.TIME_MIN);
@@ -419,6 +439,12 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 			this.enviroment.finish();
 		
 		super.onDestroy();
+	}
+	
+	@Override
+	public void onBackPressed(){
+		enviroment.pause();
+		selectGame();
 	}
 	
 	// Game functions
@@ -467,6 +493,10 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		else
 			gameDB.update(g);
 			
+			
+		if(g.getScore() < 50)
+			gameDB.delete(g);
+			
 		//enviroment.setup(new Game());
 		
 		this.soundfx.find("lose").start();
@@ -477,17 +507,20 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		
 		enableButtons(false);
 		
-		new LoseDialog.Builder(this)
+		new LoseDialog.Builder(this, g)
 				.setOnTryAgainListener(new LoseDialog.OnTryAgainListener(){
 					@Override
 					public void onTryAgain(){
-						Toast.makeText(MainActivity.this, "try again", Toast.LENGTH_SHORT).show();
+						enviroment.setup(new Game());
+						//Toast.makeText(MainActivity.this, "try again", Toast.LENGTH_SHORT).show();
+						
 					}
 				})
 				.setOnCancelListener(new DialogInterface.OnCancelListener(){
 					@Override
 					public void onCancel(DialogInterface p1){
-						Toast.makeText(MainActivity.this, "cancel", Toast.LENGTH_SHORT).show();
+						//Toast.makeText(MainActivity.this, "cancel", Toast.LENGTH_SHORT).show();
+						selectGame();
 					}
 				})
 				.show();
@@ -498,6 +531,9 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		//Toast.makeText(this, "onPlayerHit", Toast.LENGTH_SHORT).show();
 		
 		//this.soundfx.find("hit").start();
+		
+		vibrate(VIBRATOR_HIT);
+		
 		refresh();
 	}
 
@@ -506,10 +542,34 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		//Toast.makeText(this, "onPlayerFault", Toast.LENGTH_SHORT).show();
 		
 		this.soundfx.find("fault").start();
+		
+		vibrate(VIBRATOR_FAULT);
+		enableButtons(false);
+		
+		for(int i = 0; i < BTNS_LENGTH; i++)
+			lay_cor[i].setBackgroundResource(R.color.darkGray);
+			
+		enviroment.sleep();
 
-		enableButtons(true);
-		//buffer = clear(buffer, -1);
-		Arrays.fill(num_buffer, -1);
+		new Thread(new Runnable(){
+			@Override
+			public void run(){
+				try { Thread.sleep(DELAY_FAULT); } 
+				catch(InterruptedException ex){}
+				
+				runOnUiThread(new Runnable(){
+					@Override
+					public void run(){
+						refresh();
+						enviroment.wakeUp();
+						
+						/*enableButtons(true);
+						//buffer = clear(buffer, -1);
+						Arrays.fill(num_buffer, -1);*/
+					}
+				});
+			}
+		}).start();
 	}
 
 	@Override
@@ -519,7 +579,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	}
 	
 	// Menu item
-	public void confAudio(boolean active){
+	/*public void confAudio(boolean active){
 		try{
 			SharedPreferences.Editor edit = this.prefs.edit();
 			edit.putBoolean(PREFS_AUDIO, active);
@@ -539,18 +599,16 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 			audioMenu.setIcon(getResources().getDrawable(R.drawable.audio_off));
 			audioMenu.setTitle("Audio desativado");
 		}
-			
-			
-	}
+	}*/
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu){
 		try {
-			audioMenu = menu.findItem(R.id.menu_sound);
+			//audioMenu = menu.findItem(R.id.menu_sound);
 			statusMenu = menu.findItem(R.id.menu_status);
 			//orderMenu = menu.findItem(R.id.menu_mode);
 			
-			confAudio(this.prefs.getBoolean(PREFS_AUDIO, false));
+			//confAudio(this.prefs.getBoolean(PREFS_AUDIO, false));
 			//confOrder(this.prefs.getBoolean(PREFS_ORDER, true));
 			
 			
@@ -565,6 +623,12 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+		
+		/*if(menu instanceof MenuBuilder){
+            MenuBuilder menuBuilder = (MenuBuilder) menu;
+            menuBuilder.setOptionalIconsVisible(true);
+        }*/
+		
         return true;
     }
 
@@ -572,9 +636,9 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
     public boolean onOptionsItemSelected(MenuItem item) {
         
 		switch(item.getItemId()){
-			case R.id.menu_sound:
+			/*case R.id.menu_sound:
 				confAudio(!this.prefs.getBoolean(PREFS_AUDIO, false));
-				return true;
+				return true;*/
 				
 			case R.id.menu_status:
 				if(enviroment.getStatus() == EnvironmentGame.RUNNING)
@@ -584,9 +648,18 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 					enviroment.start();
 				return true;
 			
-			case R.id.menu_players:
+			case R.id.menu_settings:
 				
-				new LoseDialog.Builder(this)
+				return true;
+				
+			case R.id.menu_about:
+				new AboutDialog.Builder(this).build();
+				return true;
+				
+			// Unknown action
+			default: return super.onOptionsItemSelected(item);
+				
+				/*new LoseDialog.Builder(this, new Game())
 						.setOnTryAgainListener(new LoseDialog.OnTryAgainListener(){
 							@Override
 							public void onTryAgain(){
@@ -599,7 +672,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 								Toast.makeText(MainActivity.this, "Cancel", Toast.LENGTH_SHORT).show();
 							}
 						})
-						.show();
+						.show();*/
 				
 				//new PlayerListDialog(this).show();
 				
@@ -640,14 +713,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 							}
 						})
 						.show();*/
-				return true;
-				
-			case R.id.menu_about:
-				new GameListDialog(this).show();
-				return true;
+				//return true;
 		}
-
-        return super.onOptionsItemSelected(item);
     }
-	
 }

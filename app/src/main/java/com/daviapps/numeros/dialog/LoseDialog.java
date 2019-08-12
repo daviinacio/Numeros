@@ -40,7 +40,7 @@ public class LoseDialog extends Dialog {
 		this.tvScore.setText(String.format("%s", game.getScore()));
 		this.tvHits.setText(String.format("%s", game.getHits()));
 		this.tvFaults.setText(String.format("%s", game.getFaults()));
-		this.tvAverage.setText(String.format("%s%%", (((int) (((double) game.getHits() / (game.getHits() + game.getFaults())) * 100)))));
+		this.tvAverage.setText(String.format("%s%%", game.getAverage()));
 		//this.tvAverage.setText(String.format("%s", g
 		
 		// onClick Listener

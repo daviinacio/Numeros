@@ -55,7 +55,7 @@ public class GameAdapter extends BaseAdapter implements GenericBaseAdapter<Game>
 		//player.setText("" + pdb.selectById(item.getPlayer()).getNickname());
 		
 		try {
-			average.setText(String.format("%s%%", (((int) (((double) item.getHits() / (item.getHits() + item.getFaults())) * 100)))));
+			average.setText(String.format("%s%%", item.getAverage()));
 		}
 		catch(ArithmeticException ex){
 			average.setText("0%");

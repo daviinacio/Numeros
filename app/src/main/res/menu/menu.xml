@@ -39,6 +39,13 @@
 			android:icon="@drawable/users"
 			android:title="Players" /-->
 			
+	<!--item 
+		android:id="@+id/menu_settings"
+		android:title="@string/settings"
+		android:orderInCategory="100"
+		android:showAsAction="ifRoom"
+		android:icon="@drawable/settings"/-->
+			
 		<item 
 			android:id="@+id/menu_settings"
 			android:title="@string/settings"

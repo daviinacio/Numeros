@@ -88,7 +88,7 @@ public class EnvironmentGame {
 	}
 	
 	public void start(){
-		if(this.game == null)
+		if(this.game == null || this.game.getStatus() == EnvironmentGame.RUNNING)
 			return;
 		
 		this.wakeUp();
@@ -99,7 +99,7 @@ public class EnvironmentGame {
 	}
 	
 	public void pause(){
-		if(this.game == null)
+		if(this.game == null || this.game.getStatus() == EnvironmentGame.PAUSED)
 			return;
 		
 		this.game.setStatus(EnvironmentGame.PAUSED);
@@ -109,7 +109,7 @@ public class EnvironmentGame {
 	}
 	
 	public void stop(){
-		if(this.game == null)
+		if(this.game == null || this.game.getStatus() == EnvironmentGame.STOPPED)
 			return;
 		
 		this.game.setStatus(EnvironmentGame.STOPPED);

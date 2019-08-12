@@ -64,6 +64,10 @@ public class Game {
 
 	void setLevel(int level){ this.level = level;}
 	public int getLevel(){ return level; }
+	
+	public int getAverage(){
+		return (((int) (((double) this.getHits() / (this.getHits() + this.getFaults())) * 100)));
+	}
 
 	@Override
 	public String toString(){

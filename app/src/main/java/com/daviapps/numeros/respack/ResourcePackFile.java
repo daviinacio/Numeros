@@ -18,7 +18,7 @@ public abstract class ResourcePackFile {
 	private Version appMinVersion;
 
 	// Assets
-	protected Map<String, File> assets = new HashMap<>();
+	private Map<String, File> assets = new HashMap<>();
 
 	public ResourcePackFile(File file){
 		try {
@@ -107,5 +107,14 @@ public abstract class ResourcePackFile {
 	public String toString(){
 		return String.format("ResName:\t%s\nResType:\t%s\nResVersion:\t%s\nResAuthor:\t%s\nAppName:\t%s\nAppMinVersion:\t%s",
 							 resName, resType, resVersion, resAuthor, appName, appMinVersion);
+	}
+	
+	public File find(String key) throws IOException {
+		File result = this.assets.get(key);
+		
+		if(!result.exists())
+			throw new IOException("Resource file not found");
+		
+		return result;
 	}
 }

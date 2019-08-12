@@ -35,7 +35,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	private LinearLayout[] lay_cor;
 	private TextView score;
 	private ProgressBar time;
-	private RelativeLayout main_lay;
+	//private RelativeLayout main_lay;
 	private TextView decrement_text;
 
 	// Variables
@@ -46,7 +46,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	
 	private EnvironmentGame enviroment;
 	
-	private boolean update_asked = false;
+	//private boolean update_asked = false;
 	
 	private boolean order = false;
 	
@@ -86,6 +86,8 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+		
+		//startActivity(new Intent(MainActivity.this, LibraryActivity.class));
 		
 		/*Notification.Builder nBuilder = new Notification.Builder(this)
 			.setSmallIcon(R.drawable.ic_launcher)
@@ -408,16 +410,26 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	}*/
 
 	// Activity functions
+	
+	@Override
+	protected void onStart(){
+		// Check for update
+		UpdateChecker.check(this);
+		
+		super.onStart();
+	}
+	
 	@Override
 	protected void onResume(){
 		if(this.enviroment != null)
 			this.enviroment.wakeUp();
-		
 			
-		if(!update_asked){
+		// TODO: Load preferences
+		
+		/*if(!update_asked){
 			UpdateChecker.check(this);
 			update_asked = true;
-		}
+		}*/
 		
 		super.onResume();
 	}
@@ -472,12 +484,18 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	@Override
 	public void onGamePause(Game g){
 		//Toast.makeText(this, "onGamePause\n" + g, Toast.LENGTH_LONG).show();
-		
-		if(gameDB.count("id = " + g.getId()) == 0)
-			gameDB.insert(g);
-		else
-			gameDB.update(g);
 			
+		if(g.getScore() < 1){
+			gameDB.delete(g);
+			Toast.makeText(this, "Esta partida não acumulou pontos", Toast.LENGTH_SHORT).show();
+		}
+		else {
+			if(gameDB.count("id = " + g.getId()) == 0)
+				gameDB.insert(g);
+			else
+				gameDB.update(g);
+		}
+		
 		statusMenu.setIcon(getResources().getDrawable(R.drawable.baseline_play_arrow_white_48dp));
 		statusMenu.setEnabled(true);
 		
@@ -486,20 +504,16 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 
 	@Override
 	public void onGameStop(Game g){
-		Toast.makeText(this, "onGameStop\n" + g, Toast.LENGTH_LONG).show();
-		
+		//Toast.makeText(this, "onGameStop\n" + g, Toast.LENGTH_LONG).show();
+
 		if(gameDB.count("id = " + g.getId()) == 0)
 			gameDB.insert(g);
 		else
 			gameDB.update(g);
-			
-			
-		if(g.getScore() < 50)
-			gameDB.delete(g);
-			
+		
 		//enviroment.setup(new Game());
 		
-		this.soundfx.find("lose").start();
+		this.soundfx.play("lose");
 		refresh();
 		
 		statusMenu.setIcon(getResources().getDrawable(R.drawable.baseline_stop_white_48dp));
@@ -533,6 +547,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		//this.soundfx.find("hit").start();
 		
 		vibrate(VIBRATOR_HIT);
+		this.soundfx.play("hit");
 		
 		refresh();
 	}
@@ -541,7 +556,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	public void onPlayerFault(Game g){
 		//Toast.makeText(this, "onPlayerFault", Toast.LENGTH_SHORT).show();
 		
-		this.soundfx.find("fault").start();
+		this.soundfx.play("fault");
 		
 		vibrate(VIBRATOR_FAULT);
 		enableButtons(false);

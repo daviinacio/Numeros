@@ -53,12 +53,12 @@
 			android:showAsAction="never"
 			android:icon="@drawable/settings"/>
 	
-		<item 
+		<!--item 
 			android:id="@+id/menu_about"
 			android:title="@string/about"
         	android:orderInCategory="100"
 			android:showAsAction="never"
-			android:icon="@drawable/info_2"/>
+			android:icon="@drawable/info_2"/-->
 		
 	<!--/menu>
 	</item-->

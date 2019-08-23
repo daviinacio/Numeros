@@ -1,0 +1,13 @@
+[
+	{
+		"version": [1, 5, 6],
+		"release_date": [08, 21, 2019],
+		"subject": "Bug fix",
+		"updates": [
+			"ResourcePackFile",
+			"SoundFXResourceFile",
+			"Multiples Games",
+			
+		]
+	}
+]

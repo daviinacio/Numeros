@@ -41,6 +41,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.daviapps.numeros.SettingsActivity"
+            android:label="@string/settings"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:exported="false"

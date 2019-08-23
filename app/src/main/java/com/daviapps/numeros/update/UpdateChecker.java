@@ -35,11 +35,27 @@ public class UpdateChecker extends AsyncTask<String, Integer, ApkVersion> {
 			//Scanner sc = new Scanner(new InputStreamReader(url.openStream())).useDelimiter("\\A");
 			Scanner sc = new Scanner(url.openStream()).useDelimiter("\\A");
 
-			JSONArray dLinks = new JSONArray(sc.next());
+			JSONObject dApp = new JSONObject(sc.next());
 
 			sc.close();
+			
+			
+			// Load json index	
+			JSONArray dVersions = dApp.getJSONObject("platforms").getJSONArray("android");
+			JSONObject lastVersion = dVersions.getJSONObject(0);
 
-			for(int i = 0; i < dLinks.length(); i++){
+			version = new ApkVersion();
+
+			version.setVersion(new Version(lastVersion.getJSONArray("version").join(".")));
+			version.setReleaseDate(new Date(lastVersion.getJSONArray("release_date").join("/")));
+			version.setLink(new URL(lastVersion.getString("link")));
+			version.setMinSdkVersion(lastVersion.getInt("minSdkVersion"));
+
+			status = S_ALRIGHT;
+			
+			//Toast.makeText(context, dApp.toString(), Toast.LENGTH_SHORT).show();
+			
+			/*for(int i = 0; i < dLinks.length(); i++){
 				// Load json index
 				JSONObject dApp = dLinks.getJSONObject(i);
 
@@ -59,7 +75,7 @@ public class UpdateChecker extends AsyncTask<String, Integer, ApkVersion> {
 
 					break;
 				}
-			}
+			}*/
 
 		}
 		catch (JSONException ex){ status = S_EX_JSON; }

@@ -20,6 +20,18 @@ version 1.5.6
 	
 version 1.5.7
 	- implements AdMob
-		 
-version 1.5.8
+	
+version 1.5.6
+	- ResourcePackFile
+	- SoundFXResourceFile
+	- Multiples Games
+	
+	- Add git ignore: gradle
+	- Remove dex/debug files from repositore
+	
+version 1.5.7
+	- SettigsActivity
+	
+version 1.5.9
 	- Make DAppsBackup
+	

@@ -292,7 +292,6 @@ containing a value of this type.
         public static final int main_sublay=0x7f0a000b;
         public static final int main_version=0x7f0a0018;
         public static final int media_actions=0x7f0a0055;
-        public static final int menu_about=0x7f0a0065;
         public static final int menu_settings=0x7f0a0064;
         public static final int menu_status=0x7f0a0063;
         public static final int normal=0x7f0a0009;
@@ -414,14 +413,30 @@ containing a value of this type.
         /** item name="android:backgroundStacked">@drawable/ab_stacked_solid_example</item>
         <item name="android:backgroundSplit">@drawable/ab_background_textured_example</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Example</item
+style name="AppTheme.ActionBar.DropDown" parent="@android:style/Widget.Holo.Light.ActionBar">
+		<item name="android:background">@color/yellow</item>
+		<item name="android:popupBackground">@color/red</item>
+		<item name="android:dropDownSelector">@color/orange</item>
+	</style
+style name="ActionButton.CloseMode.Example" parent="@android:style/Widget.Holo.Light.ActionButton.CloseMode">
+        <item name="android:background">@color/cyan</item>
+    </style>
+
+	<style name="PopupMenu.Example" parent="@android:style/Widget.Material.ListPopupWindow">
+        <item name="android:popupBackground">@color/red</item>
+		<item name="android:background">@color/yellow</item>
+    </style
+item name="android:itemBackground">@color/red</item
 item name="android:backgroundStacked">@drawable/ab_stacked_solid_example</item>
         <item name="android:backgroundSplit">@drawable/ab_background_textured_example</item>
         <item name="android:progressBarStyle">@style/ProgressBar.Example</item
          */
         public static final int ActionBar=0x7f040013;
-        public static final int ActionButton_CloseMode_Example=0x7f040016;
+        /** item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Example</item
+item name="android:popupBackground">@color/Amarelo</item
+item name="android:itemBackground">@color/colorPrimary</item
+         */
         public static final int AppTheme=0x7f04000d;
-        public static final int AppTheme_ActionBar_DropDown=0x7f040015;
         /**  Widget style 
          */
         public static final int AppTheme_Dialog_Button=0x7f04000e;
@@ -441,7 +456,6 @@ style name="ActionBar.Transparent.Example" parent="@android:style/Widget.Holo.Li
     </style
          */
         public static final int AppTheme_Light=0x7f040014;
-        public static final int PopupMenu_Example=0x7f040017;
         public static final int TextAppearance_Compat_Notification=0x7f040005;
         public static final int TextAppearance_Compat_Notification_Info=0x7f040006;
         public static final int TextAppearance_Compat_Notification_Info_Media=0x7f040000;

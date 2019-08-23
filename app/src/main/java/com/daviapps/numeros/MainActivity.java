@@ -414,7 +414,13 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	@Override
 	protected void onStart(){
 		// Check for update
-		UpdateChecker.check(this);
+		if(prefs.getBoolean("checkUpdates", true)){
+			UpdateChecker.check(this);
+		}
+		
+		if(prefs.getString("lastNewsVersion", "").equals(getString(R.string.app_version))){
+			
+		}
 		
 		super.onStart();
 	}
@@ -664,12 +670,13 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 				return true;
 			
 			case R.id.menu_settings:
-				
+				Toast.makeText(this, "Função em desenvolvimento", Toast.LENGTH_SHORT).show();
+				//startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 				return true;
 				
-			case R.id.menu_about:
+			/*case R.id.menu_about:
 				new AboutDialog.Builder(this).build();
-				return true;
+				return true;*/
 				
 			// Unknown action
 			default: return super.onOptionsItemSelected(item);

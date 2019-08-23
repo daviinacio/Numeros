@@ -5,7 +5,7 @@
 	<string name="copyright">DaviApps © 2016 - 2019.</string>
 	
 	<!-- Web content -->
-	<string name="update_index">http://daviapps.6te.net/json/download_list.json</string>
+	<string name="update_index">http://daviapps.6te.net/api/apps/numeros</string>
 	<string name="debug_update_index">http://localhost:12345/download_list.json</string>
 	
 	<string name="title_player_editor">Player Editor</string>

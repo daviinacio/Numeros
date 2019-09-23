@@ -6,6 +6,7 @@ public class ApkVersion {
 	private Version version;
 	private Date release_date;
 	private URL link;
+	private URL google_play;
 	private int minSdkVersion;
 	
 	public ApkVersion(){}
@@ -28,4 +29,12 @@ public class ApkVersion {
 
 	public void setMinSdkVersion(int minSdkVersion){ this.minSdkVersion = minSdkVersion; }
 	public Integer getMinSdkVersion(){ return minSdkVersion; }
+	
+	public void setGooglePlay(URL gp_link){
+		this.google_play = gp_link;
+	}
+	
+	public URL getGooglePlay(){
+		return this.google_play;
+	}
 }

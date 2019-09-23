@@ -12,6 +12,9 @@ public class ErrorDialog {
 		ErrorDialog.show(context, title, mensage, null);
 	}
 
+	public static void show(Context context, Exception exception){
+		ErrorDialog.show(context, exception.getClass().getName(), exception.getMessage());
+	}
 
 	public static void show(Context context, String title, String mensage, DialogInterface.OnDismissListener onDismiss){
 		new AlertDialog.Builder(context)

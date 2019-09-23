@@ -52,6 +52,19 @@
 			android:orderInCategory="100"
 			android:showAsAction="never"
 			android:icon="@drawable/settings"/>
+		
+		
+	<!--item 
+		android:id="@+id/menu_export"
+		android:title="Exportar"
+		android:orderInCategory="100"
+		android:showAsAction="never"/>
+	
+	<item 
+		android:id="@+id/menu_import"
+		android:title="Importar"
+		android:orderInCategory="100"
+		android:showAsAction="never"/-->
 	
 		<!--item 
 			android:id="@+id/menu_about"

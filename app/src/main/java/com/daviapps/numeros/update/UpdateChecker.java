@@ -50,6 +50,10 @@ public class UpdateChecker extends AsyncTask<String, Integer, ApkVersion> {
 			version.setReleaseDate(new Date(lastVersion.getJSONArray("release_date").join("/")));
 			version.setLink(new URL(lastVersion.getString("link")));
 			version.setMinSdkVersion(lastVersion.getInt("minSdkVersion"));
+			
+			if(dApp.has("google_play")){
+				version.setGooglePlay(new URL(dApp.getString("google_play")));
+			}
 
 			status = S_ALRIGHT;
 			
@@ -101,8 +105,8 @@ public class UpdateChecker extends AsyncTask<String, Integer, ApkVersion> {
 					// Aplicatico desatualizado
 					if(cmpVersion == 1){
 						//Toast.makeText(this.context, "Nova versão disponível", Toast.LENGTH_SHORT).show();
-
-						new AlertDialog.Builder(this.context)
+						
+						AlertDialog.Builder dialog = new AlertDialog.Builder(this.context)
 							.setCancelable(false)
 							.setTitle("Nova atualização disponível")
 							.setMessage(String.format("Versão: %s\nLançado em: %s", result.getVersion(), result.getReleaseDate().toLocaleString().split(" 00")[0]))
@@ -112,8 +116,11 @@ public class UpdateChecker extends AsyncTask<String, Integer, ApkVersion> {
 									new UpdateDownloader(UpdateChecker.this.context).execute(result);
 								}
 							})
-							.setNegativeButton("Ignorar", null)
-							.show();
+							.setNegativeButton("Ignorar", null);
+							
+						
+							
+						dialog.show();
 					}
 
 

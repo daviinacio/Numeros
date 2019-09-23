@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "428828096244",
+    "firebase_url": "https://numeros-df4a8.firebaseio.com",
+    "project_id": "numeros-df4a8",
+    "storage_bucket": "numeros-df4a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428828096244:android:ede185786ba6b806e010a1",
+        "android_client_info": {
+          "package_name": "com.daviapps.numeros"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "428828096244-qklges9ubqb4psa3jfmvutjdr1t2als2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfxVD9ukra0gd67CZ1gRvW_vSpe_OCTms"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "428828096244-qklges9ubqb4psa3jfmvutjdr1t2als2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

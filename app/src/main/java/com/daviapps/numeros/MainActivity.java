@@ -14,6 +14,12 @@ import com.daviapps.numeros.dialog.*;
 import com.daviapps.numeros.update.*;
 import com.daviapps.numeros.database.*;
 import com.daviapps.numeros.respack.*;
+//import io.socket.client.IO;
+//import io.socket.client.Socket;
+//import io.socket.emitter.Emitter;
+//import java.net.*;
+import org.json.*;
+//import com.google.firebase.storage.*;
 
 public class MainActivity extends Activity implements EnvironmentGame.EventListener {
 	// Defines
@@ -28,7 +34,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	// Preferences Map
 	public static String PREFS_AUDIO = "audio";
 	//public static String PREFS_ORDER = "order";
-	public static String PREFS_PLAYER = "player";
+	//public static String PREFS_PLAYER = "player";
 	
 	// Components
 	private Button[] btns;
@@ -70,8 +76,9 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	private SharedPreferences prefs;
 	
 	// Database
-	DataSet<Game> gameDB;
-	DataSet<Player> playerDB;
+	private DataSet<Game> gameDB;
+	private DataSet<Player> playerDB;
+	//private FirebaseStorage storage;
 	
 	//Menu item
 	//private MenuItem audioMenu;
@@ -81,11 +88,22 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	// Resources
 	private File externalAssetsPath;
 	private SoundFXResourcePack soundfx;
+	
+	// Learn example
+	/*private Socket mSocket;
+	{
+		try {
+			mSocket = IO.socket("http://api-daviapps.herokuapp.com");
+		} catch (URISyntaxException e) {}
+	}*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+		
+		//mSocket.on("new message", onNewMessage);
+		//mSocket.connect();
 		
 		//startActivity(new Intent(MainActivity.this, LibraryActivity.class));
 		
@@ -93,12 +111,14 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 			.setSmallIcon(R.drawable.ic_launcher)
 			.setContentTitle("Numeros")
 			.setContentText("Content text")
-			.setPriority(Notification.PRIORITY_HIGH)
+			.setPriority(Notifica
+			tion.PRIORITY_HIGH)
 			//.setChannelId("numeros")
 			.;
 			
 		Notification notif = nBuilder.build();
 			
+		
 		NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		manager.notify(1, notif);
 
@@ -109,8 +129,9 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 
 		this.gameDB = new GameDB(this);
 		this.playerDB = new PlayerDB(this);
-
-
+		
+		//storage = FirebaseStorage.getInstance("gs://numeros-df4a8.appspot.com");
+		
 		/*	*	*	*	Preferences 	*	Preferences 	*	*	*	*/
 
 		this.prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -240,6 +261,31 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 			.build()
 			.show();
 	}
+	
+	/*private Emitter.Listener onNewMessage = new Emitter.Listener() {
+		@Override
+		public void call(final Object... args) {
+			MainActivity.this.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						JSONObject data = (JSONObject) args[0];
+						String username;
+						String message;
+						try {
+							username = data.getString("username");
+							message = data.getString("message");
+						} catch (JSONException e) {
+							return;
+						}
+						
+						Toast.makeText(MainActivity.this, username + ": " + message, Toast.LENGTH_SHORT).show();
+
+						// add the message to view
+						//addMessage(username, message);
+					}
+				});
+		}
+	};*/
 
 	// Number functions
 	public boolean verify(int array[], int num){
@@ -414,13 +460,17 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	@Override
 	protected void onStart(){
 		// Check for update
-		if(prefs.getBoolean("checkUpdates", true)){
+		// TODO: Use firebase onapp update
+		/*if(prefs.getBoolean("checkUpdates", true)){
 			UpdateChecker.check(this);
-		}
+		}*/
 		
 		if(prefs.getString("lastNewsVersion", "").equals(getString(R.string.app_version))){
 			
 		}
+		
+		//Toast.makeText(this, "Socket.io connected: " + mSocket.connected(), Toast.LENGTH_SHORT).show();
+		
 		
 		super.onStart();
 	}
@@ -452,6 +502,9 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 
 	@Override
 	protected void onDestroy(){
+		//mSocket.disconnect();
+		//mSocket.off("new message", onNewMessage);
+		
 		// Stop the thread
 		if(this.enviroment != null)
 			this.enviroment.finish();
@@ -668,6 +721,14 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 				if(enviroment.getStatus() == EnvironmentGame.PAUSED)
 					enviroment.start();
 				return true;
+				
+			/*case R.id.menu_import:
+				//storage.
+				return true;
+				
+			case R.id.menu_export:
+				
+				return true;*/
 			
 			case R.id.menu_settings:
 				Toast.makeText(this, "Função em desenvolvimento", Toast.LENGTH_SHORT).show();

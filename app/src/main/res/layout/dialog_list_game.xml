@@ -36,7 +36,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				android:gravity="center"
-				android:text="Score"/>
+				android:text="@string/score"/>
 
 		</LinearLayout>
 		
@@ -51,7 +51,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				android:gravity="center"
-				android:text="Averege"/>
+				android:text="@string/average"/>
 
 		</LinearLayout>
 
@@ -66,7 +66,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				android:gravity="center"
-				android:text="Date"/>
+				android:text="@string/date"/>
 
 		</LinearLayout>
 
@@ -99,7 +99,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			style="@style/AppTheme.Dialog.Button"
-			android:text="Adicionar"
+			android:text="@string/add"
 			android:id="@+id/dialog_list_player_add"/>
 
 	</LinearLayout>

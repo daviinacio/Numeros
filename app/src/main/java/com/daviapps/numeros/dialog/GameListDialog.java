@@ -54,8 +54,13 @@ public class GameListDialog extends Dialog implements OnClickListener, OnItemCli
 	protected void onStart(){
 		super.onStart();
 		
-		this.btnAdd.setText(this.onSelectListener == null ? "Adicionar" : "Nova partida");
-		this.setTitle(this.onSelectListener == null ? "Partidas" : "Partidas em andamento");
+		this.btnAdd.setText(this.onSelectListener == null ?
+				R.string.add : R.string.new_game
+		);
+		
+		this.setTitle(this.onSelectListener == null ?
+				R.string.games : R.string.title_game_list_dialog
+		);
 		
 		if(onSelectListener == null)
 			this.adapter.load();

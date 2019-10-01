@@ -39,8 +39,8 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	// Components
 	private Button[] btns;
 	private LinearLayout[] lay_cor;
-	private TextView score;
-	private ProgressBar time;
+	private TextView tvScore, tvLevel;
+	private ProgressBar pbTime;
 	//private RelativeLayout main_lay;
 	private TextView decrement_text;
 
@@ -214,16 +214,19 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		 	(LinearLayout) findViewById(R.id.lay_quatro)
 		};
 
-		score = findViewById(R.id.pontos);
-		time = findViewById(R.id.Progresso);
+		tvScore = findViewById(R.id.pontos);
+		tvLevel = findViewById(R.id.level);
+		pbTime = findViewById(R.id.Progresso);
 
-		time.setMax(EnvironmentGame.TIME_MAX);
-		time.setProgress(EnvironmentGame.TIME_MED);
+		pbTime.setMax(EnvironmentGame.TIME_MAX);
+		pbTime.setProgress(EnvironmentGame.TIME_MED);
 
 		decrement_text = findViewById(R.id.main_decrement);
 
 		TextView version = findViewById(R.id.main_version);
-		version.setText("versão: " + version.getText());
+		version.setText(String.format("%s: %s",
+				getString(R.string.version), getString(R.string.app_version)
+		));
 		
 		/*	*	*	*	Game 	*	Game 	*	Game  	*	Game 	*	*	*	*/
 		
@@ -546,7 +549,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 			
 		if(g.getScore() < 1){
 			gameDB.delete(g);
-			Toast.makeText(this, "Esta partida não acumulou pontos", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, R.string.toast_game_without_score, Toast.LENGTH_SHORT).show();
 		}
 		else {
 			if(gameDB.count("id = " + g.getId()) == 0)
@@ -648,8 +651,18 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 
 	@Override
 	public void onVisualUpdate(Game g){
-		score.setText("Pontos: " + g.getScore());
-		time.setProgress(g.getTime() >= EnvironmentGame.TIME_MIN ? g.getTime() : EnvironmentGame.TIME_MIN);
+		tvScore.setText(String.format("%s: %s",
+				getString(R.string.score),
+				g.getScore()
+		));
+		
+		tvLevel.setText(String.format("%s: %s",
+				getString(R.string.level),
+				g.getLevel()
+		));
+		
+		
+		pbTime.setProgress(g.getTime() >= EnvironmentGame.TIME_MIN ? g.getTime() : EnvironmentGame.TIME_MIN);
 	}
 	
 	// Menu item
@@ -658,7 +671,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 			SharedPreferences.Editor edit = this.prefs.edit();
 			edit.putBoolean(PREFS_AUDIO, active);
 			edit.commit();
-			edit.apply();
+				edit.apply();
 
 		} catch(NullPointerException ex){
 			ErrorDialog.show(this, "MainActivity.confAudio()", ex.getMessage());
@@ -731,7 +744,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 				return true;*/
 			
 			case R.id.menu_settings:
-				Toast.makeText(this, "Função em desenvolvimento", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, R.string.toast_on_dev_functionality, Toast.LENGTH_SHORT).show();
 				//startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 				return true;
 				

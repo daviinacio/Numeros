@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- Português -->
+	<string name="app_name">Numeros</string>
+
+	<!-- Dialog -->
+	<string name="title_player_editor">Editar Player</string>
+	<string name="title_editordialog_delete_confirm">Apagar item</string>
+	<string name="message_editordialog_delete_confirm">O item será removido\nClique em \'Ok\' para continuar.</string>
+	<string name="title_lose_dialog">Você perdeu!</string>
+	<string name="title_game_list_dialog">Partidas em andamento</string>
+
+	<!-- Toast -->
+	<string name="toast_password_do_not_match">As senhas não confere!</string>
+	<string name="toast_password_invalid">Senha incorreta!</string>
+	<string name="toast_password_cant_repite">A nova senha não pode ser igual a anterior!</string>
+	<string name="toast_password_min_char">A senha deve ter no mínimo %s caracteres!</string>
+	<string name="toast_game_without_score">Esta partida não acumulou pontos</string>
+	<string name="toast_on_dev_functionality">Função em desenvolvimento</string>
+	<string name="toast_updater_error_update_index">Erro no link do índice de atualização</string>
+
+	<!-- words -->
+	<string name="delete">Apagar</string>
+	<string name="cancel">Cancelar</string>
+	<string name="save">Salvar</string>
+	<string name="ok">Ok</string>
+	<string name="settings">Configurações</string>
+	<string name="about">Sobre</string>
+	<string name="score">Pontos</string>
+	<string name="level">Nível</string>
+	<string name="version">Versão</string>
+	<string name="average">Média</string>
+	<string name="date">Data</string>
+	<string name="hits">Acertos</string>
+	<string name="faults">Erros</string>
+	<string name="try_again">Tentar novamente</string>
+	<string name="games">Partidas</string>
+	<string name="add">Adicionar</string>
+	<string name="new_game">Nova partida</string>
+
+</resources>

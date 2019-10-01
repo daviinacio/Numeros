@@ -30,8 +30,13 @@ version 1.5.6
 	- Remove dex/debug files from repositore
 	
 version 1.5.7
+	- GooglePlay revision
+	
+version 1.5.8
+	- Translate to portuguese
+	
 	- SettigsActivity
-	
-version 1.5.9
-	- Make DAppsBackup
-	
+	- Backup to firebase storage (only logged)
+	- Or backup on api
+	- Check for update
+		Compare lastupdate time before download

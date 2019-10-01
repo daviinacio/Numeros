@@ -10,6 +10,7 @@ import android.app.*;
 import android.widget.*;
 import com.daviapps.numeros.*;
 import com.daviapps.numeros.dialog.*;
+import android.preference.*;
 
 public class UpdateChecker extends AsyncTask<String, Integer, ApkVersion> {
 	private static int S_ALRIGHT = 1, S_EX_IO = 2, S_EX_JSON;
@@ -148,7 +149,12 @@ public class UpdateChecker extends AsyncTask<String, Integer, ApkVersion> {
 	
 	// Static method
 	public static void check(Context context){
-		new UpdateChecker(context).execute(context.getString(R.string.update_index));
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+		if(prefs.contains("update_index"))
+			new UpdateChecker(context).execute(prefs.getString("update_index", "https://api.daviapps.com/apps/numeros"));
+		else
+			Toast.makeText(context, R.string.toast_updater_error_update_index, Toast.LENGTH_SHORT).show();
 	}
 }
 

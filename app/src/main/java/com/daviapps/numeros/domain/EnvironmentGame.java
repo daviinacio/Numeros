@@ -18,7 +18,6 @@ public class EnvironmentGame {
 	// Identity
 	private Game game;
 	private Player player;
-	private Level level;
 
 	private boolean run;
 	
@@ -30,8 +29,8 @@ public class EnvironmentGame {
 
 	// Constructors
 	public EnvironmentGame(final Activity activity){
-		timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {         
+		this.timer = new Timer();
+		this.timer.scheduleAtFixedRate(new TimerTask() {         
 			@Override
 			public void run() {
 				activity.runOnUiThread(new Runnable(){
@@ -43,7 +42,7 @@ public class EnvironmentGame {
 							
 							if(EnvironmentGame.this.game.getStatus() == EnvironmentGame.RUNNING){
 								if(EnvironmentGame.this.game.getTime() > EnvironmentGame.TIME_MIN){
-									game.setTime(game.getTime() - ((game.getDecrement() > 1 ? game.getDecrement() : 1) * level.velocity));
+									game.setTime(game.getTime() - ((game.getDecrement() > 1 ? game.getDecrement() : 1) * ((int) game.getLevel().getSpeed())));
 									if(EnvironmentGame.this.game.getTime() <= EnvironmentGame.TIME_MIN)
 										EnvironmentGame.this.stop();
 									
@@ -142,6 +141,26 @@ public class EnvironmentGame {
 				
 		if(this.game.getStatus() == EnvironmentGame.PAUSED)
 			this.start();
+			
+		// Level up
+		if(this.game.getLevel().isChar()){
+			this.game.levelUp();
+			
+			int bonus = this.game.getLevel().getLevel() * 10;
+			
+			this.game.setScore(this.game.getScore() + bonus);
+			
+			if(this.eventListener != null)
+				this.eventListener.onBonus(bonus);
+		}
+		else {
+			if(this.game.getCount() % 10 == 0){
+				this.game.levelUp();
+
+				if(this.eventListener != null)
+					this.eventListener.onLevelUp(this.game.getLevel());
+			}
+		}
 
 		if(this.eventListener != null)
 			this.eventListener.onPlayerHit(this.game);
@@ -165,11 +184,12 @@ public class EnvironmentGame {
 	}
 	
 	// Getters and Setters
-	public void setLevel(Level level){
-		this.level = level;
+	public void setLevel(int level){
+		this.game.setLevel(level);
 	}
+	
 	public Level getLevel(){
-		return this.level;
+		return this.game.getLevel();
 	}
 	
 	public void setPlayer(Player player){
@@ -203,5 +223,7 @@ public class EnvironmentGame {
 		void onPlayerHit(Game game);
 		void onPlayerFault(Game game);
 		void onVisualUpdate(Game game);
+		void onLevelUp(Level level);
+		void onBonus(int bonus);
 	}
 }

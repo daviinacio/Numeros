@@ -26,7 +26,7 @@ public class GameDB extends DataSet<Game> {
 			
 			values.put(columns[1], item.getPlayer());
 			values.put(columns[2], item.getStatus());
-			values.put(columns[3], item.getLevel());
+			values.put(columns[3], item.getLevel().getLevel());
 			values.put(columns[4], item.getHits());
 			values.put(columns[5], item.getFaults());
 			values.put(columns[6], item.getScore());
@@ -67,7 +67,7 @@ public class GameDB extends DataSet<Game> {
 			
 			values.put(columns[1], item.getPlayer());
 			values.put(columns[2], item.getStatus());
-			values.put(columns[3], item.getLevel());
+			values.put(columns[3], item.getLevel().getLevel());
 			values.put(columns[4], item.getHits());
 			values.put(columns[5], item.getFaults());
 			values.put(columns[6], item.getScore());

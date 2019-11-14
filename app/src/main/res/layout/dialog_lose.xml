@@ -116,7 +116,7 @@
 				android:id="@+id/dialog_lose_try_again"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:text="Try again"
+				android:text="@string/try_again"
 				android:textColor="#e0e0e0"
 				android:background="#303030"/>
 

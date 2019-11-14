@@ -60,14 +60,14 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	private Vibrator vibrator;
 	
 	// Level variables
-	private Level [] levels = {
+	/*private Level [] levels = {
 		new Level(false, 1),
 		new Level(false, 2),
 		new Level(false, 4),
 		new Level(true, 1),
 		new Level(true, 2),
 		new Level(true, 4)
-	};
+	};*/
 	
 	// Static variables
 	private static int [] color_array;
@@ -236,7 +236,6 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 			
 			this.enviroment = new EnvironmentGame(this);
 			enviroment.setEventListener(this);
-			enviroment.setLevel(levels[0]);
 			
 			this.selectGame();
 			
@@ -332,7 +331,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 
 	public void refresh(){
 		//if(!charMode)	btns_num = getRandomArray(9, 0, btns_num);
-		if(!this.enviroment.getLevel().charMode)	btns_num = getRandomArray(9, 0, btns_num);
+		if(!this.enviroment.getLevel().isChar())	btns_num = getRandomArray(9, 0, btns_num);
 		else btns_num = getRandomArray(25, 0, btns_num);
 			
 		btns_colors = getRandomArray(color_array.length -1, 0, btns_colors);
@@ -340,7 +339,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		for(int i = 0; i < BTNS_LENGTH; i++){
 			lay_cor[i].setBackgroundColor(color_array[btns_colors[i]]);
 			//btns[i].setText(charMode ? "" + (char) (CHAR_INIT + btns_num[i]) : "" + btns_num[i]);
-			btns[i].setText(this.enviroment.getLevel().charMode ? "" + (char) (CHAR_INIT + btns_num[i]) : "" + btns_num[i]);
+			btns[i].setText(this.enviroment.getLevel().isChar() ? "" + (char) (CHAR_INIT + btns_num[i]) : "" + btns_num[i]);
 		}
 
 		enableButtons(true);
@@ -357,8 +356,8 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		int num = 0;
 		
 		// if(charMode) 	num = button.getText().toString().toCharArray()[0] - CHAR_INIT;
-		if(enviroment.getLevel().charMode) 	num = button.getText().toString().toCharArray()[0] - CHAR_INIT;
-		else 			num = Integer.parseInt(button.getText().toString());
+		if(enviroment.getLevel().isChar()) 	num = button.getText().toString().toCharArray()[0] - CHAR_INIT;
+		else 								num = Integer.parseInt(button.getText().toString());
 		
 		incrementBuffer(num);
 		
@@ -603,6 +602,16 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 	}
 
 	@Override
+	public void onLevelUp(Level level) {
+		Toast.makeText(this, "LevelUp [" + level.getLevel() + "]", Toast.LENGTH_SHORT).show();
+	}
+
+	@Override
+	public void onBonus(int bonus) {
+		Toast.makeText(this, "Bônus: " + bonus + " pontos", Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
 	public void onPlayerHit(Game g){
 		//Toast.makeText(this, "onPlayerHit", Toast.LENGTH_SHORT).show();
 		
@@ -658,7 +667,7 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		
 		tvLevel.setText(String.format("%s: %s",
 				getString(R.string.level),
-				g.getLevel()
+				g.getLevel().getLevel()
 		));
 		
 		

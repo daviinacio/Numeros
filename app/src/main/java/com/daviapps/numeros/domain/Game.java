@@ -18,11 +18,12 @@ public class Game {
 	
 	// Status
 	private int status = EnvironmentGame.STOPPED;
-	private int level;
+	private Level level;
 	
 	public Game(){
 		this.dateStart = new Date();
 		this.dateLast = new Date();
+		this.setLevel(1);
 	}
 	
 	public Game(int player){
@@ -62,11 +63,16 @@ public class Game {
 	void setStatus(int status){ this.status = status; }
 	public int getStatus(){ return status; }
 
-	void setLevel(int level){ this.level = level;}
-	public int getLevel(){ return level; }
+	void setLevel(int level){ this.level = Level.newInstance(level);}
+	public Level getLevel(){ return level; }
+	void levelUp(){ this.level = this.level.next(); }
 	
 	public int getAverage(){
 		return (((int) (((double) this.getHits() / (this.getHits() + this.getFaults())) * 100)));
+	}
+	
+	public int getCount(){
+		return hits + faults;
 	}
 
 	@Override
@@ -95,8 +101,8 @@ public class Game {
 			return this;
 		}
 
-		public Builder setLevel(int levelId){
-			this.game.level = levelId;
+		public Builder setLevel(int level){
+			this.game.level = Level.newInstance(level);
 			return this;
 		}
 

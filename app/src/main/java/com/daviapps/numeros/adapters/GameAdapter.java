@@ -25,7 +25,7 @@ public class GameAdapter extends BaseAdapter implements GenericBaseAdapter<Game>
 		this.pdb = new PlayerDB(context);
 		
 		this.context = context;
-		this.dateFormat = new SimpleDateFormat("dd MMMM\nyyyy");
+		this.dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 	}
 
 	@Override

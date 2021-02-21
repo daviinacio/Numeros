@@ -172,7 +172,8 @@ public class MainActivity extends Activity implements EnvironmentGame.EventListe
 		
 		AdRequest adRequest = new AdRequest.Builder()
 			.addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-			.addTestDevice("A4DDF5EC5E81FE0D117CA05BA164E8B8")
+			.addTestDevice("A4DDF5EC5E81FE0D117CA05BA164E8B8") // LG K10
+			.addTestDevice("B32DF5960E16B6E638F0861FB8E63372") // LG G6
 			.build();
 		
 		adView.loadAd(adRequest);
